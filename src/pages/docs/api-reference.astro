@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import DocsShell from '../../components/DocsShell.astro'
+import Prose from '../../components/Prose.astro'
+
+const entry = (await getCollection('docs')).find((e) => e.id.endsWith('api-reference'))
+if (!entry) throw new Error('api-reference.md missing — run pnpm sync')
+const { Content } = await render(entry)
+---
+
+<Base title="neode — API reference">
+  <DocsShell current="_api" toc={[{ href: '#top', label: 'Full reference' }]}>
+    <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">API reference</h1>
+    <p class="txt" style="font-size:18px">Every decorator, repository method and helper — generated from the source and synced into this site by the build.</p>
+    <div class="prose" id="top">
+      <Content />
+    </div>
+  </DocsShell>
+  <Prose />
+</Base>

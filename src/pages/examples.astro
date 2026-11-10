@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro'
+import FeaturedRecipe from '../components/FeaturedRecipe.astro'
+import RecipeRows from '../components/RecipeRows.astro'
+import { recipes, verifyMeta } from '../lib/recipes'
+
+// Same list the rows show; the header line only speaks when every recipe passed
+const list = recipes.filter((r) => r.id !== 'quickstart')
+const allOk = list.every((r) => r.result?.ok)
+const when = new Date(verifyMeta.verifiedAt).toISOString().slice(0, 10)
+---
+
+<Base title="neode — Examples">
+  <section>
+    <div class="wrap" style="padding:72px 32px 40px">
+      <h1 style="margin:0;font-size:clamp(38px,5vw,60px);line-height:1.05;letter-spacing:-.02em;max-width:820px;text-wrap:balance">Nine runnable recipes. Each one opens in the playground.</h1>
+      <p style="font-size:18px;color:var(--mute);margin:20px 0 0;max-width:620px">
+        Every snippet here is the code from the repo's <code>examples/cookbook/</code>.
+      </p>
+      {
+        allOk && (
+          <p style="font-size:13px;color:var(--mute);margin:16px 0 0">
+            <span style="color:var(--ty)">✓</span> All {list.length} recipes ran against {verifyMeta.backend} in the website build on {when}.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  
+
+  <section>
+    <div class="wrap" style="padding:0 32px 96px">
+      <RecipeRows />
+    </div>
+  </section>
+</Base>

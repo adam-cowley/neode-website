@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import DocsShell from '../../components/DocsShell.astro'
+import Prose from '../../components/Prose.astro'
+
+const entry = (await getCollection('docs')).find((e) => e.id.endsWith('migration-guide'))
+if (!entry) throw new Error('migration-guide.md missing — run pnpm sync')
+const { Content } = await render(entry)
+---
+
+<Base title="neode — Migrating from 0.4.9">
+  <DocsShell current="_migration" toc={[{ href: '#top', label: 'Migration guide' }]}>
+    <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">Migrating from 0.4.9</h1>
+    <p class="txt" style="font-size:18px">Your existing map-based schemas keep working. This guide covers the rest of the move.</p>
+    <div class="prose" id="top">
+      <Content />
+    </div>
+  </DocsShell>
+  <Prose />
+</Base>

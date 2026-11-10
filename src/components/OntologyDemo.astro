@@ -1,0 +1,124 @@
+---
+// AI & Agents demo: grounding code | schema graph + real ontologyMarkdown() output
+import Code from './Code.astro'
+import { ontologySample } from '../lib/recipes'
+
+const CODE = `const systemPrompt = [
+  'You write Cypher against the graph described below.',
+  'Only use the entities, properties and relationships listed.',
+  '',
+  ontologyMarkdown(),
+].join('\\n')`
+---
+
+<div class="demo" style="border:1px solid var(--line);border-radius:18px;background:var(--surf);overflow:hidden">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 16px;background:var(--surf2);border-bottom:1px solid var(--line)">
+    <span style="font-size:13px">grounding.ts</span>
+    <span style="font-size:12px;color:var(--mute);margin-left:auto">prompt in · graph out</span>
+  </div>
+  <div class="demo-grid">
+    <div class="demo-code">
+      <Code code={CODE} />
+    </div>
+    <div class="demo-graph">
+      <svg viewBox="0 0 440 260" role="img" aria-label="The Northwind schema as a graph: Customer to Orders to Products, with Category, Supplier and Employee" style="width:100%;height:auto;display:block">
+        <defs>
+          <marker id="onto-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--mute)"></path>
+          </marker>
+        </defs>
+        <g fill="none" stroke="var(--mute)" stroke-width="2">
+          <path d="M136 62 Q180 46 232 62" marker-end="url(#onto-arr)"></path>
+          <path d="M296 106 Q330 150 306 192" marker-end="url(#onto-arr)"></path>
+          <path d="M318 206 Q356 206 384 206" marker-end="url(#onto-arr)"></path>
+          <path d="M136 96 Q172 138 212 158" marker-end="url(#onto-arr)"></path>
+        </g>
+        <g font-size="10" fill="var(--mute)" text-anchor="middle">
+          <text x="176" y="44">PURCHASED</text>
+          <text x="342" y="150">PART_OF</text>
+          <text x="338" y="190">SUPPLIED_BY</text>
+          <text x="166" y="134">HANDLED_BY</text>
+        </g>
+        <g font-size="12" font-weight="700" text-anchor="middle">
+          <rect x="48" y="52" width="88" height="34" rx="10" fill="var(--amber)"></rect><text x="92" y="74" fill="var(--onnode)">Customer</text>
+          <rect x="228" y="52" width="72" height="34" rx="10" fill="var(--blue)"></rect><text x="264" y="74" fill="var(--onblue)">Order</text>
+          <rect x="218" y="190" width="78" height="34" rx="10" fill="var(--blue)"></rect><text x="257" y="212" fill="var(--onblue)">Product</text>
+          <rect x="378" y="186" width="62" height="34" rx="10" fill="var(--blue)"></rect><text x="409" y="208" fill="var(--onblue)">Supplier</text>
+          <rect x="204" y="148" width="86" height="34" rx="10" fill="var(--amber)"></rect><text x="247" y="170" fill="var(--onnode)">Employee</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <details class="demo-out">
+    <summary>ontologyMarkdown() · captured from the verified build · northwind schema · 6 entities, 104 lines</summary>
+    <pre>{ontologySample}</pre>
+  </details>
+</div>
+
+<style>
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
+  }
+  .demo-code {
+    min-width: 0;
+    border-right: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+  }
+  /* the outer panel is the frame; the code pane needs no box of its own */
+  .demo-code :global(.codeblock) {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    width: 100%;
+  }
+  .demo-graph {
+    min-width: 0;
+    padding: 20px 22px;
+    display: flex;
+  }
+  .demo-graph svg {
+    max-width: 480px;
+    margin: auto;
+  }
+  .demo-out summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 18px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+  }
+  .demo-out summary::-webkit-details-marker {
+    display: none;
+  }
+  .demo-out summary::after {
+    content: '▾';
+    margin-left: auto;
+    color: var(--mute);
+  }
+  .demo-out:not([open]) summary::after {
+    content: '▸';
+  }
+  .demo-out pre {
+    margin: 0;
+    padding: var(--code-pad);
+    border-top: 1px solid var(--line);
+    background: var(--code);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--mute);
+    white-space: pre-wrap;
+  }
+  @media (max-width: 520px) {
+    .demo-code {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+  }
+</style>

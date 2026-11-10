@@ -1,0 +1,28 @@
+---
+// Typed error taxonomy cards
+const errors = [
+  {
+    name: 'ConstraintViolationError',
+    body: 'A unique or exists constraint said no. Note that exists constraints need Neo4j Enterprise.',
+  },
+  {
+    name: 'TransientError',
+    body: 'Carries retryability flags, so a retry loop does not guess.',
+  },
+  {
+    name: 'OptimisticLockError',
+    body: 'Raised on a stale write when a model uses @Version.',
+  },
+]
+---
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px">
+  {
+    errors.map((e) => (
+      <div style="border:1px solid var(--line);border-radius:14px;background:var(--bg);overflow:hidden">
+        <div style="padding:12px 18px;background:var(--surf2);border-bottom:1px solid var(--line);font-weight:700;font-size:14px;color:var(--amber)">{e.name}</div>
+        <div style="padding:16px 18px;color:var(--mute);font-size:14px">{e.body}</div>
+      </div>
+    ))
+  }
+</div>

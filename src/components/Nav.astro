@@ -1,0 +1,83 @@
+---
+import Logo from './Logo.astro'
+import AlphaBadge from './AlphaBadge.astro'
+
+const links = [
+  { href: '/playground/', label: 'Playground' },
+  { href: '/examples/', label: 'Examples' },
+  { href: '/why-ogm/', label: 'Why an OGM?' },
+  { href: '/agents/', label: 'AI & Agents' },
+  { href: '/docs/', label: 'Docs' },
+]
+
+interface Props {
+  /** Playground toolbar variant: compact, with run controls */
+  bare?: boolean
+}
+const { bare = false } = Astro.props
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/'
+const isActive = (href: string): boolean => current === href.replace(/\/$/, '')
+---
+
+<header
+  style="position:sticky;top:0;z-index:10;background:var(--navbg);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)"
+>
+  <div class:list={['wrap', { 'wrap-wide': bare }]}>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 28px;min-height:64px">
+      <a href="/" style="display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-weight:700;font-size:21px;min-height:44px">
+        <Logo />
+        neode
+      </a>
+      <AlphaBadge />
+      {
+        !bare && (
+          <nav style="display:flex;flex-wrap:wrap;gap:0 24px;margin-left:auto" aria-label="Main">
+            {links.map((l) => (
+              <a class="nl" href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            ))}
+          </nav>
+        )
+      }
+      {
+        bare && (
+          <nav style="display:flex;flex-wrap:wrap;gap:0 18px;margin-left:12px" aria-label="Main">
+            {links.map((l) => (
+              <a class="nl" href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            ))}
+          </nav>
+        )
+      }
+      <button
+        data-theme-toggle
+        class="btn btn-g"
+        style="min-height:36px;padding:0 12px;margin-left:auto"
+        aria-label="Toggle dark or light theme"
+      >
+        <span id="theme-toggle-label">☾</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const paint = (btn: Element | null): void => {
+    const label = btn?.querySelector('#theme-toggle-label, [data-theme-toggle-label]')
+    if (label) label.textContent = document.documentElement.dataset.theme === 'light' ? '☀' : '☾'
+  }
+  document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'
+      document.documentElement.dataset.theme = next
+      try {
+        localStorage.setItem('neode-theme', next)
+      } catch {}
+      paint(btn)
+    })
+    paint(btn)
+  })
+</script>

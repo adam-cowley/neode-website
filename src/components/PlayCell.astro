@@ -1,0 +1,155 @@
+---
+import { codeToHtml } from 'shiki'
+import { loadRecipe } from '../scripts/choreograph'
+
+interface Props {
+  /** Recipe id — source files live in src/content/cookbook */
+  recipe: string
+  /** Toolbar + Run-button replay of the captured run (homepage). Default: static code + final graph (docs). */
+  interactive?: boolean
+  /** Display filename in the toolbar */
+  label?: string
+}
+
+const { recipe: recipeId, interactive = false, label } = Astro.props
+
+const data = loadRecipe(recipeId)
+const displayLabel = label ?? `${recipeId}.ts`
+// Show the code, not the file's doc-comment header
+const displayCode = data.source.replace(/^\/\*\*[\s\S]*?\*\/\s*/, '').trim()
+const html = await codeToHtml(displayCode, {
+  lang: 'typescript',
+  themes: { light: 'github-light', dark: 'github-dark-default' },
+  defaultColor: false,
+})
+---
+
+<div class="pc" data-choreo-root data-choreo-mode={interactive ? 'cell' : 'static'} data-recipe={recipeId}>
+  {
+    interactive && (
+      <div class="pc-bar">
+        <span class="pc-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span class="pc-name">{displayLabel}</span>
+        <span class="pc-meta">runs neode@next · playback of a verified Neo4j run</span>
+        <button class="btn btn-p pc-run" data-choreo-run>
+          <span data-choreo-run-label>Run</span> <span style="font-weight:400;opacity:.8">⌘↵</span>
+        </button>
+        <a class="btn btn-g" href={`/playground/?recipe=${recipeId}`}>
+          Open in playground
+        </a>
+      </div>
+    )
+  }
+  <div class="pc-grid">
+    <div class="pc-left">
+      <div class="pc-code" set:html={html} />
+    </div>
+    <div class="pc-right">
+      <svg
+        data-choreo-graph
+        role="img"
+        aria-label={interactive ? 'Live graph view of the verified run' : 'Graph the code creates in the seeded demo database'}
+        style="width:100%;height:auto;display:block"
+      />
+      {
+        interactive && (
+          <div style="border:1px solid var(--line);border-radius:12px;background:var(--code);padding:14px 16px">
+            <div style="font-size:11px;color:var(--amber);letter-spacing:.08em;margin-bottom:8px">
+              QUERY_EXECUTED · <span data-choreo-status>captured from the verified build run</span>
+            </div>
+            <pre
+              data-choreo-cypher
+              style="margin:0;font-size:12.5px;line-height:1.65;color:var(--mute);white-space:pre-wrap">// Run to see the Cypher neode generated</pre
+            >
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  import { choreograph } from '../scripts/choreograph'
+
+  document.querySelectorAll<HTMLElement>('.pc[data-choreo-root]').forEach((root) => {
+    choreograph(root, { mode: (root.dataset.choreoMode as 'cell' | 'static') ?? 'static', recipe: root.dataset.recipe ?? 'quickstart' })
+  })
+</script>
+
+<style>
+  .pc {
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surf);
+    overflow: hidden;
+  }
+  .pc-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surf2);
+  }
+  .pc-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .pc-dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .pc-name {
+    font-size: 13px;
+  }
+  .pc-meta {
+    font-size: 12px;
+    color: var(--mute);
+    margin-left: auto;
+  }
+  .pc-run {
+    min-height: 48px;
+    padding: 0 18px;
+  }
+  .pc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  }
+  .pc-left {
+    padding: 0;
+    min-width: 0;
+    overflow: auto;
+    max-height: 520px;
+    border-right: 1px solid var(--line);
+  }
+  .pc-left :global(pre) {
+    margin: 0;
+    padding: var(--code-pad);
+    font-family: inherit;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+  .pc-right {
+    padding: 20px 24px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+  }
+</style>
+
+<style is:global>
+  [data-theme='dark'] .pc-code .shiki,
+  [data-theme='dark'] .pc-code .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: transparent !important;
+  }
+</style>

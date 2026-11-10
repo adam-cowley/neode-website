@@ -1,0 +1,67 @@
+---
+interface Row {
+  k: string
+  /** HTML allowed — link chips to the docs */
+  v: string
+}
+
+interface Props {
+  clause: string
+  /** 'amber' | 'blue' */
+  tone?: 'amber' | 'blue'
+  title: string
+  rows: Row[]
+  /** Highlight the card border (the :Modern card in the design) */
+  accent?: boolean
+}
+
+const { clause, tone = 'amber', title, rows, accent = false } = Astro.props
+const chipStyle =
+  tone === 'blue'
+    ? 'background:var(--blue);color:var(--onblue)'
+    : 'background:var(--amber);color:var(--onnode)'
+---
+
+<div class:list={['pillar', { accent }]}>
+  <div class="pillar-head">
+    <span class="pillar-clause" style={chipStyle}>{clause}</span>
+    <span style="font-weight:700;font-size:20px">{title}</span>
+  </div>
+  <dl style="margin:0;padding:8px 22px 18px;font-size:13px">
+    {
+      rows.map((r, i) => (
+        <div style={`display:flex;gap:16px;padding:10px 0;${i < rows.length - 1 ? 'border-bottom:1px dashed var(--line)' : ''}`}>
+          <dt style="color:var(--mute);min-width:84px;flex-shrink:0">{r.k}</dt>
+          <dd style="margin:0" set:html={r.v} />
+        </div>
+      ))
+    }
+  </dl>
+</div>
+
+<style>
+  .pillar {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surf);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .pillar.accent {
+    border-color: var(--blue);
+  }
+  .pillar-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 22px;
+    background: var(--surf2);
+    border-bottom: 1px solid var(--line);
+  }
+  .pillar-clause {
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 3px 10px;
+  }
+</style>

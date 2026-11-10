@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro'
+import OntologyDemo from '../components/OntologyDemo.astro'
+---
+
+<Base title="neode — AI and Agents">
+  <section>
+    <div class="wrap" style="padding:72px 32px 48px">
+      <h1 style="margin:0;font-size:clamp(38px,5vw,60px);line-height:1.05;letter-spacing:-.02em;max-width:900px;text-wrap:balance">Ground Text2Cypher in the live schema.</h1>
+      <p style="font-size:18px;color:var(--mute);margin:20px 0 0;max-width:660px">
+        A model of the graph already exists in your code — the models you defined.
+        <span style="color:var(--text)">ontologyMarkdown()</span> renders it as a document an agent can be grounded on:
+        entities, properties, relationships and what each is for. This page shows the real output for a Northwind-shaped
+        model set, captured by the build.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="padding:16px 32px 80px">
+      <OntologyDemo />
+    </div>
+  </section>
+
+  <section style="border-top:1px solid var(--line);background:var(--surf)">
+    <div class="wrap" style="padding:80px 32px">
+      <h2 style="margin:0 0 32px;font-size:clamp(28px,3.5vw,40px);line-height:1.1;letter-spacing:-.015em">The agent-facing surface.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:16px">
+        <div style="border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:22px">
+          <div style="font-weight:700;color:var(--amber);margin-bottom:8px">Text2Cypher grounding</div>
+          <div style="color:var(--mute)">Put the live ontology in the system prompt so generated Cypher sticks to entities, properties and relationships that exist.</div>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:22px">
+          <div style="font-weight:700;color:var(--amber);margin-bottom:8px">MCP resources</div>
+          <div style="color:var(--mute)">The same schema document is the natural thing to expose as a resource to MCP clients.</div>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:22px">
+          <div style="font-weight:700;color:var(--amber);margin-bottom:8px">Agent skills</div>
+          <div style="color:var(--mute)">Skills that teach a coding agent how to build with neode ship in the package.</div>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:22px">
+          <div style="font-weight:700;color:var(--amber);margin-bottom:8px">llms.txt</div>
+          <div style="color:var(--mute)">The repo generates it, and this site ships it, so any agent can read the API without scraping. <a href="/llms.txt">Read ours</a>.</div>
+        </div>
+      </div>
+      <div style="margin-top:40px;display:flex;flex-wrap:wrap;gap:12px">
+        <a class="btn btn-p" href="/playground/">Open the playground</a>
+        <a class="btn btn-g" href="/docs/api-reference/">API reference and llms.txt</a>
+      </div>
+    </div>
+  </section>
+</Base>

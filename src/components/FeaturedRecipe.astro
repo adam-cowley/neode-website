@@ -1,0 +1,37 @@
+---
+// Featured recipe on the Examples page: real source, real captured Cypher
+import Code from './Code.astro'
+import { recipe } from '../lib/recipes'
+
+const id = 'relationships'
+const r = recipe(id)
+// The two statements that tell the story: the MERGE with edge properties,
+// and the cascade delete decision. Real QUERY_EXECUTED capture, unedited.
+const statements = (r?.result?.statements ?? []).slice(0, 2)
+const cypher = statements.map((s) => s.cypher).join('\n\n/* then */\n\n') || '// run pnpm verify to capture'
+---
+
+<div style="border:1px solid var(--line);border-radius:18px;background:var(--surf);overflow:hidden">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 18px;background:var(--surf2);border-bottom:1px solid var(--line)">
+    <span style="font-size:13px;font-weight:700;background:var(--blue);color:var(--onblue);border-radius:8px;padding:3px 10px">relationships</span>
+    <span style="font-weight:700;font-size:18px">Relate, detach, cascade — with edge properties</span>
+    <a class="btn btn-p" style="margin-left:auto" href={`/playground/?recipe=${id}`}>Open in playground</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(480px,100%),1fr))">
+    <div style="min-width:0;border-right:1px solid var(--line)">
+      <div style="padding:8px 18px;font-size:11px;color:var(--mute);letter-spacing:.08em;border-bottom:1px solid var(--line)">CODE · examples/cookbook/relationships.ts</div>
+      <Code code={r?.source.replace(/^\/\*\*[\s\S]*?\*\/\s*/, '') ?? ''} />
+    </div>
+    <div style="min-width:0;display:flex;flex-direction:column">
+      <div style="padding:8px 18px;font-size:11px;color:var(--amber);letter-spacing:.08em;border-bottom:1px solid var(--line)">CYPHER · GENERATED (captured from the verified run)</div>
+      <pre style="margin:0;padding:var(--code-pad);font-size:12.5px;line-height:1.7;color:var(--mute);white-space:pre-wrap;overflow-x:auto">{cypher}</pre>
+      <div style="padding:8px 18px;font-size:11px;color:var(--mute);letter-spacing:.08em;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">RESULT</div>
+      <div style="padding:18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <span style="font-size:13px;font-weight:700;background:var(--blue);color:var(--onblue);border-radius:10px;padding:6px 12px">Adam</span>
+        <span style="font-size:12px;color:var(--mute)">OWNS · since: '2024-01-01' ←</span>
+        <span style="font-size:13px;font-weight:700;background:var(--amber);color:var(--onnode);border-radius:10px;padding:6px 12px">Rex</span>
+        <span style="font-size:12px;color:var(--mute)">Rex survived the owner: true</span>
+      </div>
+    </div>
+  </div>
+</div>

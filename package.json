@@ -1,0 +1,30 @@
+{
+  "name": "neode-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "neode website — marketing site and in-browser playground for the neode OGM",
+  "scripts": {
+    "dev": "astro dev",
+    "sync": "node scripts/sync.mjs",
+    "verify": "node scripts/verify.mjs",
+    "build": "node scripts/sync.mjs && node scripts/verify.mjs && astro build",
+    "build:fast": "node scripts/sync.mjs && astro build",
+    "preview": "astro preview",
+    "e2e": "playwright test",
+    "shots": "playwright test pages.spec.ts --project=desktop",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.12",
+    "astro": "^5.14.0",
+    "shiki": "^3.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "neo4j-driver": "^6.0.0",
+    "typescript": "^5.8.0"
+  }
+}

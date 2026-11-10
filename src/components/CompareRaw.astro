@@ -1,0 +1,30 @@
+---
+// Raw driver vs neode, side by side
+const RAW = `const session = driver.session()
+const result = await session.run(
+  'CREATE (p:Person { id: randomUUID(), name: $name, age: $age }) RETURN p',
+  { name: 'Adam', age: 30 }
+)
+const adam = result.records[0].get('p').properties
+// age comes back as a driver Integer, not a number`
+
+const NEODE = `const adam = await neode.create(Person, { name: 'Adam', age: 30 })`
+---
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(460px,100%),1fr));gap:20px;align-items:start">
+  <div style="border:1px solid var(--line);border-radius:16px;background:var(--bg);overflow:hidden;min-width:0">
+    <div style="padding:10px 18px;background:var(--surf2);border-bottom:1px solid var(--line);font-size:12px;color:var(--mute)">neo4j-driver · hand-written</div>
+    <pre style="margin:0;padding:20px 18px;overflow-x:auto;font-size:13px;line-height:1.8">{RAW}</pre>
+    <div style="border-top:1px solid var(--line);padding:16px 18px;font-size:14px;color:var(--mute)">
+      You also own: the uniqueness constraint, the length check on <span style="color:var(--text)">name</span>, closing the session, and every query like this one.
+    </div>
+  </div>
+  <div style="border:1px solid var(--blue);border-radius:16px;background:var(--bg);overflow:hidden;min-width:0">
+    <div style="padding:10px 18px;background:var(--surf2);border-bottom:1px solid var(--line);font-size:12px;color:var(--blue)">neode</div>
+    <pre style="margin:0;padding:20px 18px;overflow-x:auto;font-size:13px;line-height:1.8">{NEODE}</pre>
+    <div style="border-top:1px solid var(--line);padding:16px 18px;font-size:14px;color:var(--mute)">
+      Validation runs first, the constraint comes from the model, and you get a typed <span style="color:var(--text)">Person</span> back.
+    </div>
+    <div style="border-top:1px solid var(--line);padding:16px 18px"><a class="btn btn-p" href="/playground/">Watch the Cypher it writes</a></div>
+  </div>
+</div>

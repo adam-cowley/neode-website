@@ -1,0 +1,54 @@
+---
+import { codeToHtml } from 'shiki'
+
+interface Props {
+  code: string
+  lang?: string
+  /** Label shown in the pane header strip (like a file tab) */
+  label?: string
+  class?: string
+}
+
+const { code, lang = 'typescript', label, class: className } = Astro.props
+
+const html = await codeToHtml(code.trim(), {
+  lang,
+  themes: { light: 'github-light', dark: 'github-dark-default' },
+  defaultColor: false,
+})
+---
+
+<div class:list={['codeblock', className]}>
+  {label && <div class="codeblock-label">{label}</div>}
+  <div class="codeblock-body" set:html={html} />
+</div>
+
+<style>
+  .codeblock {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--code);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .codeblock-label {
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surf2);
+    font-size: 12px;
+    color: var(--mute);
+  }
+  .codeblock-body :global(pre) {
+    margin: 0;
+    padding: var(--code-pad);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+</style>
+
+<style is:global>
+  /* shiki dual themes are handled globally in global.css (spans carry
+     --shiki-light/--shiki-dark); nothing component-specific left here. */
+</style>

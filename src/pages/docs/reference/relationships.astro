@@ -1,0 +1,60 @@
+---
+import Base from '../../../layouts/Base.astro'
+import DocsShell, { GUIDE } from '../../../components/DocsShell.astro'
+import PlayCell from '../../../components/PlayCell.astro'
+import Code from '../../../components/Code.astro'
+
+const page = GUIDE.find((p) => p.slug === 'relationships')!
+
+const EAGER = `@NodeEntity()
+export class Movie {
+  @Property({ type: 'string', unique: true, primary: true })
+  title: string
+
+  @OneToMany(() => Person, 'ACTED_IN', { direction: 'out', eager: true })
+  actors: Person[]
+}
+
+const movie = await neode.find(Movie, title, { with: { actors: true } })`
+
+const toc = [
+  { href: '#eager', label: 'Eager loading' },
+  { href: '#edges', label: 'Relationship entities' },
+  { href: '#read-models', label: 'Read models' },
+  { href: '#try', label: 'See it' },
+]
+---
+
+<Base title="neode — Relationships">
+  <DocsShell current="relationships" toc={toc} prev={{ href: 'models', label: 'Defining models' }} next={{ href: 'traversals', label: 'Traversals' }}>
+    <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">{page.title}</h1>
+    <p class="txt" style="font-size:18px">
+      <code>@OneToOne</code> and <code>@OneToMany</code> describe edges from a model. Mark one eager and neode loads it in
+      the same statement as the node.
+    </p>
+
+    <h2 class="sec" id="eager">Eager loading</h2>
+    <p class="txt">Ask for the relationship via the <code>with</code> option and the whole thing comes back hydrated, in one Cypher statement.</p>
+    <Code code={EAGER} />
+
+    <h2 class="sec" id="edges">Relationship entities</h2>
+    <p class="txt">
+      When an edge carries properties, model it as an entity with <code>@StartNode</code> and <code>@EndNode</code>. Create
+      and remove edges with <code>relate()</code> and <code>detach()</code>, and use cascade deletes when a node should take
+      its edges with it.
+    </p>
+
+    <h2 class="sec" id="read-models">Read models</h2>
+    <p class="txt">Read-model decorators describe what a read should return. All of them are projected into one query per read, so there is no N+1.</p>
+    <dl style="margin:0 0 8px">
+      <div class="dl"><dt>@RelatedOne</dt><dd>A single related node</dd></div>
+      <div class="dl"><dt>@RelatedMany</dt><dd>A list of related nodes</dd></div>
+      <div class="dl"><dt>@RelationshipCount</dt><dd>How many edges, without loading them</dd></div>
+      <div class="dl"><dt>@RelationshipExists</dt><dd>Whether an edge exists</dd></div>
+      <div class="dl"><dt>@Computed, @Expression</dt><dd>Derived values computed in the same statement</dd></div>
+    </dl>
+
+    <h2 class="sec" id="try">See it</h2>
+    <PlayCell recipe="relationships" />
+  </DocsShell>
+</Base>

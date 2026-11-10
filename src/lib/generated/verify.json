@@ -1,0 +1,729 @@
+{
+  "verifiedAt": "2026-11-10T12:41:18.284Z",
+  "backend": "Neo4j 5 Enterprise (Docker, :7689)",
+  "neo4jVersion": "Neo4j/5.26.33",
+  "results": {
+    "quickstart": {
+      "ok": true,
+      "ms": 171,
+      "output": "Goodfellas: 1 actor(s) — Ray Liotta",
+      "error": "",
+      "statements": [
+        {
+          "cypher": "CREATE (this:Person { id: $this_id, name: $this_name, age: $this_age })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "90666ea5-de3a-430c-adf0-4681ace95ffc",
+            "this_name": "Ray Liotta",
+            "this_age": 40
+          },
+          "duration": 20.075374999999994
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+          },
+          "duration": 1.1130830000000032
+        },
+        {
+          "cypher": "MATCH (this:Person { id: $this_id })\nRETURN this\nLIMIT 1",
+          "params": {
+            "this_id": "90666ea5-de3a-430c-adf0-4681ace95ffc"
+          },
+          "duration": 8.936917000000008
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+          },
+          "duration": 5.024415999999988
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nSET this += $set_0\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3",
+            "set_0": {
+              "age": 41,
+              "name": "Ray Liotta"
+            }
+          },
+          "duration": 5.901209000000009
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+          },
+          "duration": 0.7993749999999977
+        },
+        {
+          "cypher": "CREATE (this:Movie { title: $this_title })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_title": "Goodfellas"
+          },
+          "duration": 5.869541999999996
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN \n     this { \n        .*\n        ,__EAGER_ID__: elementId(this)\n        ,__EAGER_LABELS__: labels(this)\n        ,actors: [ (this)<-[this_actors_rel:`ACTED_IN`]-(this_actors_node:Person) | \n         this_actors_node { \n                .*\n                ,__EAGER_ID__: elementId(this_actors_node)\n                ,__EAGER_LABELS__: labels(this_actors_node)\n        } ]\n    } AS this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
+          },
+          "duration": 12.842041999999992
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)<-[rel:`ACTED_IN`]-(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+          },
+          "duration": 12.176083000000006
+        },
+        {
+          "cypher": "MATCH (this:Movie { title: $this_title })\nRETURN this { .*, __EAGER_ID__: elementId(this), __EAGER_LABELS__: labels(this), actors: [ (this)<-[this_actors_rel:`ACTED_IN`]-(this_actors_node:Person) | \n         this_actors_node { \n                .*\n                ,__EAGER_ID__: elementId(this_actors_node)\n                ,__EAGER_LABELS__: labels(this_actors_node)\n        } ] } AS this\nLIMIT 1",
+          "params": {
+            "this_title": "Goodfellas"
+          },
+          "duration": 13.798791999999992
+        }
+      ]
+    },
+    "crud-collection": {
+      "ok": true,
+      "ms": 140,
+      "output": "found Adam / Adam / Adam of 1\n- Adam (31)\n[\n  {\n    \"_id\": \"4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9\",\n    \"_labels\": [\n      \"Person\"\n    ],\n    \"id\": \"e3d677af-c031-4e8c-b37d-d6868486d564\",\n    \"name\": \"Adam\",\n    \"age\": 31\n  }\n]\n{\n  _id: '4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9',\n  _labels: [ 'Person' ],\n  id: 'e3d677af-c031-4e8c-b37d-d6868486d564',\n  name: 'Adam',\n  age: 30\n}",
+      "error": "",
+      "statements": [
+        {
+          "cypher": "CREATE (this:Person { id: $this_id, name: $this_name, age: $this_age })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "e3d677af-c031-4e8c-b37d-d6868486d564",
+            "this_name": "Adam",
+            "this_age": 30
+          },
+          "duration": 8.843250000000005
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
+          },
+          "duration": 1.7230420000000066
+        },
+        {
+          "cypher": "MATCH (this:Person { id: $this_id })\nRETURN this\nLIMIT 1",
+          "params": {
+            "this_id": "e3d677af-c031-4e8c-b37d-d6868486d564"
+          },
+          "duration": 2.0315000000000083
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
+          },
+          "duration": 4.962290999999993
+        },
+        {
+          "cypher": "MATCH (this:Person)\nWHERE (this.name = $where_this_name)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_name": "Adam"
+          },
+          "duration": 10.674374999999998
+        },
+        {
+          "cypher": "MATCH (this:Person)\nRETURN this\nORDER BY this.name\nLIMIT 10",
+          "params": {},
+          "duration": 8.756833
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nSET this += $set_0\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9",
+            "set_0": {
+              "age": 31
+            }
+          },
+          "duration": 1.5723330000000004
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
+          },
+          "duration": 0.9775000000000063
+        },
+        {
+          "cypher": "MATCH (this:Person)\nRETURN this",
+          "params": {},
+          "duration": 6.580958999999993
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
+          },
+          "duration": 1.6820000000000022
+        }
+      ]
+    },
+    "relationships": {
+      "ok": true,
+      "ms": 178,
+      "output": "Rex survived the owner: true",
+      "error": "",
+      "statements": [
+        {
+          "cypher": "CREATE (this:Person { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "2c103b66-37ee-4fed-878a-73edb81a90ba",
+            "this_name": "Adam"
+          },
+          "duration": 8.140042000000001
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
+          },
+          "duration": 1.0534589999999966
+        },
+        {
+          "cypher": "CREATE (this:Pet { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "d9158ffd-df9a-4fab-9606-edb3ffa2e059",
+            "this_name": "Rex"
+          },
+          "duration": 17.869874999999993
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 0.9050829999999905
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`OWNS`]->(to)\nSET rel.`since` = $set_0\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5",
+            "set_0": "2024-01-01"
+          },
+          "duration": 16.223083000000003
+        },
+        {
+          "cypher": "MATCH (from)-[rel:`OWNS`]->(to)\nWHERE (elementId(from) = $where_from_id AND elementId(to) = $where_to_id)\nDELETE rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 11.976833
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
+          },
+          "duration": 1.0943749999999994
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 1.969458000000003
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`OWNS`]->(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 11.998750000000001
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nOPTIONAL MATCH (this)-[this_pets_rel:`OWNS`]->()\nDELETE this_pets_rel\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
+          },
+          "duration": 10.004249999999985
+        },
+        {
+          "cypher": "MATCH (this:Pet)\nWHERE (this.name = $where_this_name)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_name": "Rex"
+          },
+          "duration": 7.919666999999976
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 1.461624999999998
+        }
+      ]
+    },
+    "eager-read-models": {
+      "ok": true,
+      "ms": 251,
+      "output": "[ 'indexes', 'intro' ]\n{ title: 'Neo4j 101', status: 'ACTIVE' } [ 'intro' ] 1",
+      "error": "TransientError: ForsetiClient[transactionId=2356, clientId=3] can't acquire ExclusiveLock{owner=ForsetiClient[transactionId=2355, clientId=1]} on NODE_RELATIONSHIP_GROUP_DELETE(7) because holders of that lock are waiting for ForsetiClient[transactionId=2356, clientId=3].\n Wait list:ExclusiveLock[\nClient[2355] waits for [ForsetiClient[transactionId=2356, clientId=3]]]\n    at classifyError (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55903:87)\n    at withQueryContext (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55930:23)\n    at Neo4jTransactionHandle.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:56021:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Object.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:56093:14)\n    at async DeleteService.delete (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:62700:5)\n    at async Neode2.delete (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:65648:7)\n    at async Promise.all (index 0)\n    at async main (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:65996:5) {\n  isRetryable: true,\n  code: 'Neo.TransientError.Transaction.DeadlockDetected',\n  [cause]: Neo4jError2: ForsetiClient[transactionId=2356, clientId=3] can't acquire ExclusiveLock{owner=ForsetiClient[transactionId=2355, clientId=1]} on NODE_RELATIONSHIP_GROUP_DELETE(7) because holders of that lock are waiting for ForsetiClient[transactionId=2356, clientId=3].\n   Wait list:ExclusiveLock[\n  Client[2355] waits for [ForsetiClient[transactionId=2356, clientId=3]]]\n  \n      at captureStacktrace (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:6568:21)\n      at Result2.GenericResult2 (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:6587:25)\n      at new Result2 (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:7082:44)\n      at newCompletedResult (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:7785:14)\n      at Object.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:7569:18)\n      at Transaction2.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:7418:36)\n      at Neo4jTransactionHandle.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:56019:40)\n      at file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:56117:66\n      at Object.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:56093:20)\n      at DeleteService.delete (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:62700:23) {\n    constructor: [Function: Neo4jError2] {\n      isRetriable: [Function (anonymous)],\n      isRetryable: [Function (anonymous)]\n    },\n    cause: undefined,\n    gqlStatus: '50N05',\n    gqlStatusDescription: 'error: general processing exception - deadlock detected. Deadlock detected while trying to acquire locks. See log for more details.',\n    diagnosticRecord: {\n      OPERATION: '',\n      OPERATION_CODE: '0',\n      CURRENT_SCHEMA: '/',\n      _classification: 'TRANSIENT_ERROR'\n    },\n    classification: 'TRANSIENT_ERROR',\n    rawClassification: 'TRANSIENT_ERROR',\n    code: 'Neo.TransientError.Transaction.DeadlockDetected',\n    retriable: true,\n    retryable: true\n  }\n}",
+      "statements": [
+        {
+          "cypher": "CREATE (this:Course { id: $this_id, title: $this_title, status: $this_status })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "4bbad962-3bc1-439f-9b72-de61d4051467",
+            "this_title": "Neo4j 101",
+            "this_status": "ACTIVE"
+          },
+          "duration": 15.110667
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN \n     this { \n        .*\n        ,__EAGER_ID__: elementId(this)\n        ,__EAGER_LABELS__: labels(this)\n        ,lessons: [ (this)-[this_lessons_rel:`HAS_LESSON`]->(this_lessons_node:Lesson) | \n         this_lessons_node { \n                .*\n                ,__EAGER_ID__: elementId(this_lessons_node)\n                ,__EAGER_LABELS__: labels(this_lessons_node)\n        } ]\n    } AS this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
+          },
+          "duration": 13.710416999999993
+        },
+        {
+          "cypher": "CREATE (this:Lesson { id: $this_id, slug: $this_slug })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "d7dc34cd-94d4-41e4-8a4b-e7e62fe1300c",
+            "this_slug": "intro"
+          },
+          "duration": 7.311917000000008
+        },
+        {
+          "cypher": "CREATE (this:Lesson { id: $this_id, slug: $this_slug })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "9468ac14-e632-433d-bd0d-83de976164f5",
+            "this_slug": "indexes"
+          },
+          "duration": 7.731166999999999
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:10"
+          },
+          "duration": 1.0561660000000046
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
+          },
+          "duration": 0.9839999999999947
+        },
+        {
+          "cypher": "CREATE (this:Student { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "7d1dd799-89b4-4226-b00e-ffa4721cd5b0",
+            "this_name": "Adam"
+          },
+          "duration": 5.873249999999999
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN \n     this { \n        .*\n        ,__EAGER_ID__: elementId(this)\n        ,__EAGER_LABELS__: labels(this)\n        ,courses: [ (this)-[this_courses_rel:`IN_COURSE`]->(this_courses_node:Course) | \n         this_courses_node { \n                .*\n                ,__EAGER_ID__: elementId(this_courses_node)\n                ,__EAGER_LABELS__: labels(this_courses_node)\n                ,lessons: [ (this_courses_node)-[this_courses_node_lessons_rel:`HAS_LESSON`]->(this_courses_node_lessons_node:Lesson) | \n             this_courses_node_lessons_node { \n                        .*\n                        ,__EAGER_ID__: elementId(this_courses_node_lessons_node)\n                        ,__EAGER_LABELS__: labels(this_courses_node_lessons_node)\n            } ]\n        } ]\n    } AS this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
+          },
+          "duration": 16.76275000000001
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`HAS_LESSON`]->(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:10"
+          },
+          "duration": 10.990333000000007
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`HAS_LESSON`]->(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
+          },
+          "duration": 1.7030830000000208
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`IN_COURSE`]->(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
+          },
+          "duration": 10.328958999999998
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`COMPLETED_LESSON`]->(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:10"
+          },
+          "duration": 9.236249999999984
+        },
+        {
+          "cypher": "MATCH (this:Student { id: $this_id })\nRETURN this { .*, __EAGER_ID__: elementId(this), __EAGER_LABELS__: labels(this), courses: [ (this)-[this_courses_rel:`IN_COURSE`]->(this_courses_node:Course) | \n         this_courses_node { \n                .*\n                ,__EAGER_ID__: elementId(this_courses_node)\n                ,__EAGER_LABELS__: labels(this_courses_node)\n                ,lessons: [ (this_courses_node)-[this_courses_node_lessons_rel:`HAS_LESSON`]->(this_courses_node_lessons_node:Lesson) | \n             this_courses_node_lessons_node { \n                        .*\n                        ,__EAGER_ID__: elementId(this_courses_node_lessons_node)\n                        ,__EAGER_LABELS__: labels(this_courses_node_lessons_node)\n            } ]\n        } ], course: [ (this)-[:`IN_COURSE`]->(node:`Course`) | node { .title, .status } ][0], completedSlugs: [ (this)-[:`COMPLETED_LESSON`]-(node:`Lesson`) | node.slug ], completedCount: COUNT { (this)-[:`COMPLETED_LESSON`]->(node) } } AS this\nLIMIT 1",
+          "params": {
+            "this_id": "7d1dd799-89b4-4226-b00e-ffa4721cd5b0"
+          },
+          "duration": 51.725708
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
+          },
+          "duration": 15.308166999999997
+        }
+      ]
+    },
+    "validation": {
+      "ok": true,
+      "ms": 109,
+      "output": "created 5392d865-cefb-4cf6-b0a1-510ca8edb5e8",
+      "error": "Rejected: 3 failing checks\n- \"name\" length must be at least 2 characters long\n- \"email\" must be a valid email\n- \"age\" must be less than or equal to 150",
+      "statements": [
+        {
+          "cypher": "CREATE (this:User { id: $this_id, name: $this_name, email: $this_email, age: $this_age })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "5392d865-cefb-4cf6-b0a1-510ca8edb5e8",
+            "this_name": "Adam",
+            "this_email": "adam@example.com",
+            "this_age": 30
+          },
+          "duration": 9.217667000000006
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2"
+          },
+          "duration": 1.2565000000000026
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2"
+          },
+          "duration": 1.4491250000000093
+        }
+      ]
+    },
+    "schema-sync": {
+      "ok": true,
+      "ms": 157,
+      "output": "installed: CREATE CONSTRAINT person_id_unique IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`id` IS UNIQUE\ninstalled: CREATE CONSTRAINT person_email_unique IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`email` IS UNIQUE\ninstalled: CREATE INDEX person_name_index IF NOT EXISTS FOR (n:`Person`) ON (n.`name`)\nstale (4) — installed but not declared:\n  - FULLTEXT __ogm_ft_probe__ on :__OgmFulltextProbe__ (__probe__)\n      fix (requires dropStale: true): DROP FULLTEXT INDEX __ogm_ft_probe__ IF EXISTS\n  - VECTOR __ogm_vec_probe__ on :__OgmVectorProbe__ (__probe__)\n      fix (requires dropStale: true): DROP VECTOR INDEX __ogm_vec_probe__ IF EXISTS\n  - VECTOR movie_embedding_vector on :Movie (embedding)\n      fix (requires dropStale: true): DROP VECTOR INDEX movie_embedding_vector IF EXISTS\n  - FULLTEXT movie_search on :Movie (title, plot)\n      fix (requires dropStale: true): DROP FULLTEXT INDEX movie_search IF EXISTS\nmismatched (2) — installed definition differs from the declaration:\n  - UNIQUE person_id_unique on :Person (id)\n      fix: CREATE CONSTRAINT person_id_unique IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`id` IS UNIQUE\n      drop first: DROP INDEX person_id_unique IF EXISTS\n  - UNIQUE person_email_unique on :Person (email)\n      fix: CREATE CONSTRAINT person_email_unique IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`email` IS UNIQUE\n      drop first: DROP INDEX person_email_unique IF EXISTS\ndropped: DROP CONSTRAINT person_id_unique IF EXISTS\ndropped: DROP CONSTRAINT person_email_unique IF EXISTS\ndropped: DROP INDEX person_name_index IF EXISTS",
+      "error": "",
+      "statements": [
+        {
+          "cypher": "CREATE CONSTRAINT person_id_unique IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`id` IS UNIQUE",
+          "params": {},
+          "duration": 26.027416999999993
+        },
+        {
+          "cypher": "CREATE CONSTRAINT person_email_unique IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`email` IS UNIQUE",
+          "params": {},
+          "duration": 8.298665999999997
+        },
+        {
+          "cypher": "CREATE INDEX person_name_index IF NOT EXISTS FOR (n:`Person`) ON (n.`name`)",
+          "params": {},
+          "duration": 7.503416000000001
+        },
+        {
+          "cypher": "SHOW CONSTRAINTS",
+          "params": {},
+          "duration": 6.622082999999989
+        },
+        {
+          "cypher": "SHOW INDEXES",
+          "params": {},
+          "duration": 8.48599999999999
+        },
+        {
+          "cypher": "SHOW CURRENT GRAPH TYPE",
+          "params": {},
+          "duration": 2.41641700000001
+        },
+        {
+          "cypher": "CREATE (this:Person { id: $this_id, email: $this_email, name: $this_name })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "afd4d969-7ede-4e82-888e-5691be5658bb",
+            "this_email": "a@example.com",
+            "this_name": "Adam"
+          },
+          "duration": 7.470208000000014
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
+          },
+          "duration": 4.590332999999987
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
+          },
+          "duration": 4.531125000000003
+        },
+        {
+          "cypher": "DROP CONSTRAINT person_id_unique IF EXISTS",
+          "params": {},
+          "duration": 2.592458999999991
+        },
+        {
+          "cypher": "DROP CONSTRAINT person_email_unique IF EXISTS",
+          "params": {},
+          "duration": 2.8549159999999887
+        },
+        {
+          "cypher": "DROP INDEX person_name_index IF EXISTS",
+          "params": {},
+          "duration": 1.670000000000016
+        }
+      ]
+    },
+    "search-fulltext-vector": {
+      "ok": true,
+      "ms": 159,
+      "output": "fulltext 0.086: Se7en\nfulltext 0.080: The Matrix\nvector 0.998: The Matrix\nvector 0.560: Se7en",
+      "error": "",
+      "statements": [
+        {
+          "cypher": "CREATE FULLTEXT INDEX movie_search IF NOT EXISTS FOR (n:`Movie`) ON EACH [n.`title`, n.`plot`]",
+          "params": {},
+          "duration": 15.641959
+        },
+        {
+          "cypher": "CREATE VECTOR INDEX movie_embedding_vector IF NOT EXISTS FOR (n:`Movie`) ON (n.`embedding`) OPTIONS { indexConfig: { `vector.dimensions`: 3, `vector.similarity_function`: 'cosine' } }",
+          "params": {},
+          "duration": 3.4186249999999987
+        },
+        {
+          "cypher": "CREATE (this:Movie { title: $this_title, plot: $this_plot, embedding: $this_embedding })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_title": "The Matrix",
+            "this_plot": "A computer hacker learns the truth",
+            "this_embedding": [
+              1,
+              0.2,
+              0
+            ]
+          },
+          "duration": 6.890041999999994
+        },
+        {
+          "cypher": "CREATE (this:Movie { title: $this_title, plot: $this_plot, embedding: $this_embedding })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_title": "Se7en",
+            "this_plot": "Two detectives hunt a hacker",
+            "this_embedding": [
+              0,
+              1,
+              0.2
+            ]
+          },
+          "duration": 7.536417
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+          },
+          "duration": 5.692958000000004
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
+          },
+          "duration": 6.108457999999999
+        },
+        {
+          "cypher": "CALL db.index.fulltext.queryNodes($index, $q) YIELD node, score RETURN node, score ORDER BY score DESC LIMIT 5",
+          "params": {
+            "index": "movie_search",
+            "q": "hacker"
+          },
+          "duration": 10.194542000000013
+        },
+        {
+          "cypher": "MATCH (n:`Movie`) SEARCH n IN (VECTOR INDEX `movie_embedding_vector` FOR $vector LIMIT $k) SCORE AS score RETURN n AS node, score ORDER BY score DESC",
+          "params": {
+            "index": "movie_embedding_vector",
+            "k": 2,
+            "vector": [
+              0.9,
+              0.1,
+              0
+            ]
+          },
+          "duration": 2.9623750000000086
+        },
+        {
+          "cypher": "CALL db.index.vector.queryNodes($index, $k, $vector) YIELD node, score RETURN node, score ORDER BY score DESC",
+          "params": {
+            "index": "movie_embedding_vector",
+            "k": 2,
+            "vector": [
+              0.9,
+              0.1,
+              0
+            ]
+          },
+          "duration": 9.24258300000001
+        },
+        {
+          "cypher": "MATCH (this:Movie)\nRETURN this",
+          "params": {},
+          "duration": 5.906207999999992
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+          },
+          "duration": 4.590417000000002
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
+          },
+          "duration": 4.814374999999998
+        }
+      ]
+    },
+    "batch-and-transactions": {
+      "ok": true,
+      "ms": 139,
+      "output": "batch wrote 2 statements\ntags inside the transaction: 3\ntags after the run: 3",
+      "error": "batch rolled back: ERROR_TRANSACTION_FAILED: failed statement(s) 1",
+      "statements": [
+        {
+          "cypher": "CREATE (:Tag {name: \"alpha\"})",
+          "params": {},
+          "duration": 19.295375
+        },
+        {
+          "cypher": "CREATE (:Tag {name: $name})",
+          "params": {
+            "name": "beta"
+          },
+          "duration": 6.388292000000007
+        },
+        {
+          "cypher": "CREATE (:Tag {name: \"gamma\"})",
+          "params": {},
+          "duration": 1.6348330000000004
+        },
+        {
+          "cypher": "CREATE BAD SYNTAX",
+          "params": {},
+          "duration": 1.936667
+        },
+        {
+          "cypher": "CREATE (:Tag {name: $name})",
+          "params": {
+            "name": "from-transaction"
+          },
+          "duration": 3.6847080000000005
+        },
+        {
+          "cypher": "MATCH (t:Tag) RETURN count(t) AS count",
+          "params": {},
+          "duration": 9.70375
+        },
+        {
+          "cypher": "MATCH (this:Tag)\nRETURN this",
+          "params": {},
+          "duration": 6.747250000000008
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
+          },
+          "duration": 1.6088750000000118
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
+          },
+          "duration": 3.3757090000000005
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
+          },
+          "duration": 3.7363749999999953
+        }
+      ]
+    },
+    "multi-database": {
+      "ok": true,
+      "ms": 111,
+      "output": "audit copy holds 6 person node(s)\ncount via cypher: 6",
+      "error": "",
+      "statements": [
+        {
+          "cypher": "CREATE (this:Person { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "daa040f7-1342-4c98-94dd-31372e4f136b",
+            "this_name": "Adam"
+          },
+          "duration": 15.496291000000006
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
+          },
+          "duration": 1.0336250000000007
+        },
+        {
+          "cypher": "MATCH (this:Person)\nRETURN this",
+          "params": {},
+          "duration": 1.4731670000000037
+        },
+        {
+          "cypher": "MATCH (p:Person) RETURN count(p) AS count",
+          "params": {},
+          "duration": 1.3138330000000025
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
+          },
+          "duration": 0.9322090000000003
+        }
+      ],
+      "auditOk": true
+    },
+    "server-startup": {
+      "ok": true,
+      "ms": 312,
+      "output": "listening on :3111\n\nGET / -> 200 nodes: 0",
+      "error": "",
+      "statements": [
+        {
+          "cypher": "MATCH (n) RETURN count(n) AS nodes",
+          "params": {},
+          "duration": 24.021540999999957
+        }
+      ]
+    },
+    "ontology-sample": {
+      "ok": true,
+      "output": "# Graph ontology\n\n## Customer\n\nA company or person that buys products\n\nLabels: Customer\n\n### Properties\n\n- `_id` (internalId)\n- `customerID` (string, unique): Natural key from the source system\n- `companyName` (string, required): Trading name shown on invoices\n- `contactName` (string): Who to call about an order\n- `country` (string): Two-letter ISO country the customer ships to\n\n### Relationships\n\n- `ORDERS` :PURCHASED out -> Order: Every order this customer has placed, newest first when read\n\n## Order\n\nOne purchase: an employee handled it, it contains products\n\nLabels: Order\n\n### Properties\n\n- `_id` (internalId)\n- `orderID` (string, unique)\n- `orderDate` (date): The day the customer placed the order\n- `requiredDate` (date)\n- `shippedDate` (date): Empty until the warehouse ships\n- `freight` (float)\n\n### Relationships\n\n- `PRODUCTS` :CONTAINS out -> Product: Line items: the products on this order\n- `EMPLOYEE` :HANDLED_BY out -> Employee: The salesperson who took the order\n\n## Product\n\nA product the company stocks and sells\n\nLabels: Product\n\n### Properties\n\n- `_id` (internalId)\n- `productID` (string, unique)\n- `productName` (string, required)\n- `unitPrice` (float): Current list price, per unit\n- `unitsInStock` (integer): Warehouse stock on hand; 0 means back-ordered\n- `discontinued` (boolean): True once the product is withdrawn — exclude from new orders\n\n### Relationships\n\n- `CATEGORY` :PART_OF out -> Category: Exactly one category groups each product\n- `SUPPLIER` :SUPPLIED_BY out -> Supplier: The vendor the product is sourced from\n\n## Category\n\nGroups products for browsing and reporting\n\nLabels: Category\n\n### Properties\n\n- `_id` (internalId)\n- `categoryID` (string, unique)\n- `categoryName` (string, required)\n\n## Supplier\n\nThe vendor a product is sourced from\n\nLabels: Supplier\n\n### Properties\n\n- `_id` (internalId)\n- `supplierID` (string, unique)\n- `companyName` (string, required)\n- `country` (string)\n\n## Employee\n\nA salesperson who takes orders; reports to another employee\n\nLabels: Employee\n\n### Properties\n\n- `_id` (internalId)\n- `employeeID` (string, unique)\n- `firstName` (string, required)\n- `lastName` (string, required)\n- `title` (string)\n- `hireDate` (date)\n\n### Relationships\n\n- `REPORTS_TO` :REPORTS_TO out -> Employee: The managing employee — self-referencing, the org chart is a hierarchy\n"
+    }
+  }
+}

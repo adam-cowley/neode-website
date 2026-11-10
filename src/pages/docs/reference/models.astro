@@ -1,0 +1,75 @@
+---
+import Base from '../../../layouts/Base.astro'
+import DocsShell, { GUIDE } from '../../../components/DocsShell.astro'
+import PlayCell from '../../../components/PlayCell.astro'
+import Code from '../../../components/Code.astro'
+
+const page = GUIDE.find((p) => p.slug === 'models')!
+
+const DECORATORS = `import { NodeEntity, Property, Uuid } from 'neode'
+
+@NodeEntity()
+export class Person {
+  @Uuid({ primary: true })
+  id: string
+
+  @Property({ type: 'string', unique: true, required: true, min: 2, max: 50 })
+  name: string
+
+  @Property({ type: 'int' })
+  age: number
+}`
+
+const MAP = `import { defineModel } from 'neode'
+
+export const Person = defineModel('Person', {
+  id: { type: 'uuid', primary: true },
+  name: { type: 'string', unique: true, required: true, min: 2, max: 50 },
+  age: 'int', // shorthand: property : type
+})`
+
+const toc = [
+  { href: '#decorators', label: 'Decorators' },
+  { href: '#map', label: 'Map API' },
+  { href: '#properties', label: 'Property types and guards' },
+  { href: '#validation', label: 'Validation' },
+  { href: '#timestamps', label: 'Timestamps' },
+  { href: '#try', label: 'See it' },
+]
+---
+
+<Base title="neode — Defining models">
+  <DocsShell current="models" toc={toc} next={{ href: 'relationships', label: 'Relationships' }}>
+    <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">{page.title}</h1>
+    <p class="txt" style="font-size:18px">
+      A model is a class with decorators, or a map passed to <code>defineModel()</code>. Both feed the same metamodel and
+      runtime, so you can mix them freely.
+    </p>
+
+    <h2 class="sec" id="decorators">Decorators</h2>
+    <p class="txt">Standard TC39 decorators on plain classes. No <code>experimentalDecorators</code> and no <code>reflect-metadata</code>.</p>
+    <Code code={DECORATORS} />
+
+    <h2 class="sec" id="map">Map API</h2>
+    <p class="txt">The same model without decorators. It is also the migration path for schemas written against 0.x.</p>
+    <Code code={MAP} />
+
+    <h2 class="sec" id="properties">Property types and guards</h2>
+    <dl style="margin:0 0 8px">
+      <div class="dl"><dt>Types</dt><dd>strings, numbers, temporal (date, datetime, time, duration), point, uuid, arrays, defaults</dd></div>
+      <div class="dl"><dt>Constraints</dt><dd>primary, unique, index</dd></div>
+      <div class="dl"><dt>Visibility</dt><dd>hidden, protected, readonly</dd></div>
+      <div class="dl" id="timestamps"><dt>Timestamps</dt><dd>@CreatedAt and @UpdatedAt are written by the database clock, not the application</dd></div>
+    </dl>
+
+    <h2 class="sec" id="validation">Validation</h2>
+    <p class="txt">
+      Rules live in the property config — <code>required</code>, <code>min</code>/<code>max</code>, <code>email</code>,
+      <code>regex</code>, and the rest of the Zod rule names. Every write path validates, and all failures arrive together
+      in one error before a statement runs.
+    </p>
+
+    <h2 class="sec" id="try">See it</h2>
+    <PlayCell recipe="quickstart" />
+  </DocsShell>
+</Base>

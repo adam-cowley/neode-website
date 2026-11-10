@@ -1,0 +1,460 @@
+/* neode website — design system ported from the approved design.
+   Theme palettes extracted from the design source (dark is default). */
+
+:root {
+  --bg: #070b16;
+  --surf: #0d1426;
+  --surf2: #131d38;
+  --line: #2a3a62;
+  --text: #eaf0ff;
+  --mute: #a3b1d1;
+  --blue: #5baeff;
+  --amber: #ffb347;
+  --onblue: #04101f;
+  --code: #080d1b;
+  --ty: #8fe3c7;
+  --navbg: rgba(7, 11, 22, 0.88);
+  --onnode: #1b1000;
+  --code-pad: 16px 18px; /* one padding for every code pane */
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f5f7fc;
+  --surf: #ffffff;
+  --surf2: #eaeff9;
+  --line: #c3cee8;
+  --text: #0c1530;
+  --mute: #44527a;
+  --blue: #0b63d1;
+  --amber: #9a4a00;
+  --onblue: #ffffff;
+  --code: #f0f4fc;
+  --ty: #0b7a5f;
+  --navbg: rgba(245, 247, 252, 0.9);
+  --onnode: #ffffff;
+  color-scheme: light;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  font-family: 'JetBrains Mono', ui-monospace, 'Space Grotesk', SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--blue);
+}
+a:hover {
+  color: var(--text);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ---- code syntax classes (shared by hand-marked code and shiki themes) -- */
+.k { color: var(--blue); }               /* keyword    */
+.s { color: var(--amber); }              /* string     */
+.d { color: var(--text); font-weight: 700; } /* declaration */
+.t { color: var(--ty); }                 /* type       */
+.c { color: var(--mute); font-style: italic; } /* comment */
+
+/* shiki dual themes: apply the matching theme's colors in both modes.
+   Markdown-fenced code renders as `.astro-code` (Astro) with the LIGHT
+   colors inline — the dark rule needs !important to win; direct shiki
+   output (Code.astro) renders as `.shiki` with only the CSS variables. */
+.astro-code span {
+  color: var(--shiki-light);
+}
+.shiki span,
+.shiki pre {
+  color: var(--shiki-light);
+  background-color: transparent;
+}
+[data-theme='dark'] .astro-code span,
+[data-theme='dark'] .shiki span,
+[data-theme='dark'] .shiki pre {
+  color: var(--shiki-dark) !important;
+  background-color: transparent;
+}
+
+/* ---- shared primitives (from the design) -------------------------------- */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+@media (min-width: 1360px) {
+  .wrap-wide {
+    max-width: 1360px;
+  }
+}
+
+.nl {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--mute);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nl:hover {
+  color: var(--text);
+}
+.nl[aria-current='page'] {
+  color: var(--text);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+}
+.btn-p {
+  background: var(--blue);
+  color: var(--onblue);
+}
+.btn-p:hover {
+  color: var(--onblue);
+  filter: brightness(1.1);
+}
+.btn-g {
+  background: transparent;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.btn-g:hover {
+  box-shadow: inset 0 0 0 1px var(--blue);
+  color: var(--text);
+}
+
+.ref {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+}
+.ref:hover {
+  color: var(--blue);
+  text-decoration-color: var(--blue);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  background: var(--surf2);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 13px;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--mute);
+  cursor: pointer;
+}
+.tab[aria-selected='true'] {
+  color: var(--text);
+  border-bottom-color: var(--blue);
+}
+
+.mono {
+  font-family: inherit;
+}
+
+.hv {
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px transparent;
+}
+.hv:hover,
+.hv[data-hot='true'] {
+  box-shadow: 0 0 0 2px var(--blue);
+}
+
+/* docs reference sidebar / toc / content */
+.gh {
+  margin: 32px 0 10px;
+  padding: 0 12px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+}
+.side {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 0;
+  background: transparent;
+  color: var(--mute);
+  font-family: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.side:hover {
+  color: var(--text);
+}
+.side[aria-current='page'] {
+  color: var(--text);
+  background: var(--surf2);
+}
+.sub {
+  display: flex;
+  min-height: 36px;
+  padding-left: 24px;
+  align-items: center;
+  color: var(--mute);
+  text-decoration: none;
+  font-size: 13px;
+}
+.toc {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  color: var(--mute);
+  text-decoration: none;
+  font-size: 13px;
+}
+.toc:hover {
+  color: var(--text);
+}
+.txt {
+  margin: 0 0 28px;
+  line-height: 1.85;
+  color: var(--mute);
+  max-width: 680px;
+}
+.sec {
+  margin: 72px 0 20px;
+  font-size: 26px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 84px;
+}
+.dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 18px 0;
+  line-height: 1.75;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+.dl dt {
+  color: var(--ty);
+  min-width: 180px;
+  flex-shrink: 0;
+}
+.dl dd {
+  margin: 0;
+  color: var(--mute);
+  /* take the remaining row and wrap INTERNALLY, so wrapped lines keep
+     the dd alignment instead of the flex container wrapping the item */
+  flex: 1;
+  min-width: min(240px, 100%);
+}
+.code {
+  margin: 0 0 8px;
+  padding: 24px;
+  overflow-x: auto;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 2;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--code);
+}
+.ed-wrap {
+  position: relative;
+}
+/* textarea and highlight overlay must share IDENTICAL type metrics or the
+   highlight drifts as you scroll (textarea falls back to UA font otherwise) */
+.ed-wrap .ed-hl,
+.ed-wrap .ed {
+  margin: 0;
+  padding: var(--code-pad);
+  border: 0;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.75;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  tab-size: 2;
+}
+.ed-wrap .ed-hl {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  background: var(--code);
+  color: var(--text);
+  scrollbar-width: none; /* the textarea scrolls for both */
+}
+.ed-wrap .ed {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text);
+  overflow: auto;
+}
+/* selecting paints the textarea's text in the UA's ::selection colour,
+   which ghosts over the overlay's coloured text — keep the selection a
+   translucent box only; the readable text stays the overlay's */
+.ed-wrap .ed::selection {
+  background: rgba(91, 174, 255, 0.3);
+  color: transparent;
+}
+.n {
+  color: var(--ty);
+}
+.ed:focus {
+  outline: 1px solid var(--blue);
+}
+
+/* screen-reader-only (the playground's h1 is for the document outline) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* examples page rows */
+.row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1.1fr) minmax(0, 2fr) auto;
+  gap: 12px 24px;
+  align-items: center;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 720px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+.open {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.doc {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surf);
+  padding: 24px;
+  text-decoration: none;
+  color: var(--text);
+}
+.doc:hover {
+  border-color: var(--blue);
+}
+
+.step {
+  flex: 1 1 170px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surf);
+  padding: 18px;
+}
+
+/* ---- animation (honours reduced motion) --------------------------------- */
+.fl {
+  animation: fl 7s ease-in-out infinite;
+}
+.flow {
+  stroke-dasharray: 2 14;
+  stroke-linecap: round;
+  animation: flow 1.6s linear infinite;
+}
+@keyframes fl {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fl,
+  .flow {
+    animation: none;
+  }
+}

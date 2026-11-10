@@ -1,0 +1,40 @@
+---
+import Base from '../../../layouts/Base.astro'
+import DocsShell, { GUIDE } from '../../../components/DocsShell.astro'
+import PlayCell from '../../../components/PlayCell.astro'
+import Code from '../../../components/Code.astro'
+
+const page = GUIDE.find((p) => p.slug === 'search')!
+
+const SEARCH = `const hits = await knn(runner, 'Movie', 'movie_plot_vector', embedding, 5)
+const textHits = await search(runner, 'Movie', 'movie_plot', toFulltextQuery('heist'))`
+
+const toc = [
+  { href: '#vector', label: 'Vector search' },
+  { href: '#fulltext', label: 'Full-text search' },
+  { href: '#try', label: 'See it' },
+]
+---
+
+<Base title="neode — Vector and full-text search">
+  <DocsShell current="search" toc={toc} prev={{ href: 'traversals', label: 'Traversals' }}>
+    <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">{page.title}</h1>
+    <p class="txt" style="font-size:18px">Search a model by meaning with <code>knn()</code>, or by words with <code>search()</code>.</p>
+
+    <h2 class="sec" id="vector">Vector search</h2>
+    <p class="txt">
+      Declare an embedding property with <code set:html={'@Vector({ dimensions })'} />. <code>knn()</code> returns the k
+      nearest neighbours over a vector index, using the Cypher 25 <code>SEARCH</code> clause with a fallback.
+    </p>
+
+    <h2 class="sec" id="fulltext">Full-text search</h2>
+    <p class="txt">
+      <code>search()</code> returns matches with relevance scores. Wrap user input in <code>toFulltextQuery()</code> so it is
+      sanitised first.
+    </p>
+    <Code code={SEARCH} />
+
+    <h2 class="sec" id="try">See it</h2>
+    <PlayCell recipe="search-fulltext-vector" />
+  </DocsShell>
+</Base>

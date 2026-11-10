@@ -1,0 +1,28 @@
+---
+// Honest caveats grid
+const caveats = [
+  { title: '1.0 is an alpha', body: 'Install with @next. A plain install still gives 0.4.9.' },
+  { title: 'Node.js 20+', body: 'Required.' },
+  { title: 'Models are process-global', body: 'One schema per process.' },
+  { title: 'exists constraints', body: 'Need Neo4j Enterprise.' },
+]
+---
+
+<section>
+  <div class="wrap" style="padding:72px 32px 24px">
+    <h2 style="margin:0 0 28px;font-size:clamp(28px,3.5vw,38px);line-height:1.1;letter-spacing:-.01em">Honest caveats.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px">
+      {
+        caveats.map((c) => (
+          <div style="border:1px dashed var(--amber);border-radius:14px;padding:18px">
+            <div style="font-weight:700;margin-bottom:4px">{c.title}</div>
+            <div style="color:var(--mute);font-size:14px">{c.body}</div>
+          </div>
+        ))
+      }
+    </div>
+    <p style="margin:20px 0 0;color:var(--mute)">
+      Coming from 0.4.9? Map-based schemas keep working. <a href="/docs/migration/">Read the migration guide</a>.
+    </p>
+  </div>
+</section>

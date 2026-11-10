@@ -1,0 +1,86 @@
+---
+// Two definition styles + the shared schema card, hover-synced
+const DECORATORS = [
+  '<span class="k">import</span> { <span class="d">NodeEntity</span>, <span class="d">Property</span>, <span class="d">Uuid</span> } <span class="k">from</span> <span class="s">\'neode\'</span>',
+  '',
+  '<span class="d">@NodeEntity</span>()',
+  '<span class="k">export class</span> <span class="t hv" data-style-field="Person">Person</span> {',
+  '  <span class="d">@Uuid</span>({ primary: <span class="k">true</span> })',
+  '  <span class="hv" data-style-field="id">id</span>: <span class="t">string</span>',
+  '',
+  '  <span class="d">@Property</span>({ type: <span class="s">\'string\'</span>, unique: <span class="k">true</span>, required: <span class="k">true</span>, min: 2, max: 50 })',
+  '  <span class="hv" data-style-field="name">name</span>: <span class="t">string</span>',
+  '',
+  '  <span class="d">@Property</span>({ type: <span class="s">\'int\'</span> })',
+  '  <span class="hv" data-style-field="age">age</span>: <span class="t">number</span>',
+  '}',
+].join('\n')
+
+const MAP = [
+  '<span class="k">import</span> { <span class="d">defineModel</span> } <span class="k">from</span> <span class="s">\'neode\'</span>',
+  '',
+  '<span class="k">export const</span> <span class="t hv" data-style-field="Person">Person</span> = defineModel(<span class="s">\'Person\'</span>, {',
+  '  <span class="hv" data-style-field="id">id</span>: { type: <span class="s">\'uuid\'</span>, primary: <span class="k">true</span> },',
+  '  <span class="hv" data-style-field="name">name</span>: { type: <span class="s">\'string\'</span>, unique: <span class="k">true</span>, required: <span class="k">true</span>, min: 2, max: 50 },',
+  '  <span class="hv" data-style-field="age">age</span>: <span class="s">\'int\'</span>, <span class="c">// shorthand: property : type</span>',
+  '})',
+].join('\n')
+
+const fields = [
+  { key: 'id', meta: 'uuid · primary' },
+  { key: 'name', meta: 'string · unique' },
+  { key: 'age', meta: 'int' },
+]
+---
+
+<section>
+  <div class="wrap" style="padding:72px 32px">
+    <h2 style="margin:0 0 12px;font-size:clamp(32px,4vw,46px);line-height:1.08;letter-spacing:-.015em">Decorators or a plain map. Same metamodel.</h2>
+    <p style="margin:0 0 40px;color:var(--mute);max-width:640px">Hover a property in either style and find it on the schema card. The map API is also the migration path from 0.x.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:20px;align-items:stretch">
+      <div data-styles-pane style="border:1px solid var(--line);border-radius:16px;background:var(--surf);min-width:0;overflow-x:auto">
+        <div style="padding:10px 18px;border-bottom:1px solid var(--line);background:var(--surf2);font-size:12px;color:var(--mute)">decorators</div>
+        <pre style="margin:0;padding:20px 18px;font-size:13px;line-height:1.8" set:html={DECORATORS} />
+      </div>
+      <div data-styles-pane style="border:1px solid var(--line);border-radius:16px;background:var(--surf);min-width:0;overflow-x:auto">
+        <div style="padding:10px 18px;border-bottom:1px solid var(--line);background:var(--surf2);font-size:12px;color:var(--mute)">map-based</div>
+        <pre style="margin:0;padding:20px 18px;font-size:13px;line-height:1.8" set:html={MAP} />
+      </div>
+      <div style="border:1px solid var(--line);border-radius:16px;background:var(--surf);min-width:0;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+        <div style="width:100%;max-width:260px;border:2px solid var(--amber);border-radius:16px;overflow:hidden;background:var(--bg)">
+          <div style="padding:10px 16px;background:var(--amber);color:var(--onnode);font-weight:700;font-size:14px" data-style-field="Person">:Person</div>
+          <div style="font-size:13px">
+            {fields.map((f) => (
+              <div style="display:flex;justify-content:space-between;padding:10px 16px" data-style-row={f.key}>
+                <span data-style-row-key={f.key}>{f.key}</span>
+                <span style="color:var(--mute)">{f.meta}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--mute);text-align:center">one metamodel · two ways to say it</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Hover sync: a hovered field lights the matching schema-card row in both panes
+  document.querySelectorAll<HTMLElement>('[data-style-field]').forEach((el) => {
+    const field = el.dataset.styleField
+    const on = (): void => {
+      document.querySelectorAll(`[data-style-row="${field}"]`).forEach((row) => {
+        ;(row as HTMLElement).style.background = 'var(--surf2)'
+        ;(row as HTMLElement).style.boxShadow = 'inset 3px 0 0 var(--blue)'
+      })
+    }
+    const off = (): void => {
+      document.querySelectorAll(`[data-style-row="${field}"]`).forEach((row) => {
+        ;(row as HTMLElement).style.background = ''
+        ;(row as HTMLElement).style.boxShadow = ''
+      })
+    }
+    el.addEventListener('mouseenter', on)
+    el.addEventListener('mouseleave', off)
+  })
+</script>

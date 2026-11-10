@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro'
+import DocsShell from '../../components/DocsShell.astro'
+---
+
+<Base title="neode — Docs">
+  <section>
+    <div class="wrap" style="padding:72px 32px 40px">
+      <h1 style="margin:0;font-size:clamp(38px,5vw,60px);line-height:1.05;letter-spacing:-.02em;max-width:820px;text-wrap:balance">Start with the guide. Keep the API reference open.</h1>
+      <p style="font-size:18px;color:var(--mute);margin:20px 0 0;max-width:660px">
+        The guide walks the library in order — model definition, relationships, traversals, search — and every page has a
+        runnable cell replaying a verified Neo4j run. The API reference and migration guide are generated from the source
+        and synced at build time, so they cannot drift from the code.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="padding:16px 32px 56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:16px">
+      <a class="doc" href="/docs/api-reference/">
+        <div style="font-size:12px;color:var(--amber);margin-bottom:10px">api-reference</div>
+        <div style="font-weight:700;font-size:22px;margin-bottom:6px">API reference</div>
+        <div style="color:var(--mute)">Every decorator, repository method and helper, in one place.</div>
+      </a>
+      <a class="doc" href="/docs/migration/">
+        <div style="font-size:12px;color:var(--amber);margin-bottom:10px">migration guide</div>
+        <div style="font-weight:700;font-size:22px;margin-bottom:6px">Migrating from 0.4.9</div>
+        <div style="color:var(--mute)">Map-based schemas keep working. This is how you move the rest.</div>
+      </a>
+      <a class="doc" href="/docs/reference/models/">
+        <div style="font-size:12px;color:var(--amber);margin-bottom:10px">guide</div>
+        <div style="font-weight:700;font-size:22px;margin-bottom:6px">The guide</div>
+        <div style="color:var(--mute)">Models, relationships, traversals and search — four short pages with a runnable cell each.</div>
+      </a>
+      <a class="doc" href="/llms.txt">
+        <div style="font-size:12px;color:var(--amber);margin-bottom:10px">llms.txt</div>
+        <div style="font-weight:700;font-size:22px;margin-bottom:6px">For agents</div>
+        <div style="color:var(--mute)">The same documentation, written to be read by a model.</div>
+      </a>
+      <a class="doc" href="/examples/">
+        <div style="font-size:12px;color:var(--amber);margin-bottom:10px">cookbook</div>
+        <div style="font-weight:700;font-size:22px;margin-bottom:6px">Runnable examples</div>
+        <div style="color:var(--mute)">Ten recipes, each one opens in the playground.</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="padding:0 32px 96px">
+      <div style="border:1px dashed var(--amber);border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px">
+        <div>
+          <div style="font-weight:700;margin-bottom:6px">1.0 is an alpha</div>
+          <div style="color:var(--mute)">Install with <span style="color:var(--text)">npm install neode@next</span>. A plain <span style="color:var(--text)">npm install neode</span> still gives 0.4.9.</div>
+        </div>
+        <div style="color:var(--mute)">
+          <div style="margin-bottom:6px">Node.js 20 or newer.</div>
+          <div style="margin-bottom:6px">Models are process-global: one schema per process.</div>
+          <div><span style="color:var(--text)">exists</span> constraints need Neo4j Enterprise.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

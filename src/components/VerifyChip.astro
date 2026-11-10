@@ -1,0 +1,22 @@
+---
+import { recipe } from '../lib/recipes'
+
+interface Props {
+  /** Recipe id this chip describes */
+  id: string
+}
+const { id } = Astro.props
+const ok = recipe(id)?.result?.ok
+---
+
+{
+  ok ? null : (
+    <span
+      class="chip"
+      style="color:var(--amber);border-color:var(--amber);cursor:default"
+      title="This recipe needs a server feature the in-process engine cannot provide"
+    >
+      requires a Neo4j server
+    </span>
+  )
+}

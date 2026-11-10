@@ -1,0 +1,47 @@
+---
+import Base from '../../../layouts/Base.astro'
+import DocsShell, { GUIDE } from '../../../components/DocsShell.astro'
+import PlayCell from '../../../components/PlayCell.astro'
+import Code from '../../../components/Code.astro'
+
+const page = GUIDE.find((p) => p.slug === 'traversals')!
+
+const TRAVERSE = `const paths = await neode.traverse(Person)
+  .hop('ACTED_IN', 'out', Movie)
+  .hop('DIRECTED', 'in', Person, { degrees: 2 })
+  .where({ name: 'Adam' })
+  .run()`
+
+const toc = [
+  { href: '#hops', label: 'Hops' },
+  { href: '#filter', label: 'Filtering and running' },
+  { href: '#try', label: 'See it' },
+]
+---
+
+<Base title="neode — Traversals">
+  <DocsShell current="traversals" toc={toc} prev={{ href: 'relationships', label: 'Relationships' }} next={{ href: 'search', label: 'Vector and full-text search' }}>
+    <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">{page.title}</h1>
+    <p class="txt" style="font-size:18px">
+      <code>neode.traverse()</code> builds multi-hop paths from a starting model, with a hop for each relationship you want
+      to follow.
+    </p>
+
+    <h2 class="sec" id="hops">Hops</h2>
+    <p class="txt">
+      Each <code>.hop()</code> takes a relationship type, a direction, and the model on the far side. Pass
+      <code>degrees</code> to follow the same relationship more than once.
+    </p>
+    <Code code={TRAVERSE} />
+
+    <h2 class="sec" id="filter">Filtering and running</h2>
+    <p class="txt">
+      <code>.where()</code> filters the starting nodes, and <code>.run()</code> executes the traversal and returns the paths.
+      Each hydrated row is one path.
+    </p>
+
+    <h2 class="sec" id="try">See it</h2>
+    <p class="txt">The eager-read-models recipe walks the same idea from the write side: a Student, their Courses, and each Course's Lessons, hydrated in one read.</p>
+    <PlayCell recipe="eager-read-models" />
+  </DocsShell>
+</Base>

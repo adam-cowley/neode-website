@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro'
+import Hero from '../components/Hero.astro'
+import PlayCell from '../components/PlayCell.astro'
+import Engines from '../components/Engines.astro'
+import Pillar from '../components/Pillar.astro'
+import TwoStyles from '../components/TwoStyles.astro'
+import OneQuery from '../components/OneQuery.astro'
+import Caveats from '../components/Caveats.astro'
+import FourSteps from '../components/FourSteps.astro'
+---
+
+<Base title="neode — Define your graph in TypeScript">
+  <Hero />
+
+  <!-- LIVE CELL -->
+  <section>
+    <div class="wrap" style="padding:24px 32px 80px">
+      <PlayCell recipe="quickstart" label="quickstart.ts" interactive />
+    </div>
+  </section>
+
+  <Engines />
+
+  <!-- PILLARS -->
+  <section>
+    <div class="wrap" style="padding:96px 32px 40px">
+      <h2 style="margin:0 0 40px;font-size:clamp(32px,4vw,46px);line-height:1.08;letter-spacing:-.015em;max-width:760px;text-wrap:balance">The API, area by area.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:24px">
+        <Pillar
+          clause=":Modeling"
+          title="Model definition"
+          rows={[
+            { k: 'api', v: '<a class="ref" href="/docs/reference/models/">TC39 decorators</a> <span style="color:var(--mute)">|</span> <a class="ref" href="/docs/reference/models/#map">defineModel()</a>' },
+            { k: 'types', v: '<a class="ref" href="/docs/reference/models/#properties">string · int · uuid · date · datetime · duration · point · arrays</a>' },
+            { k: 'guards', v: '<a class="ref" href="/docs/reference/models/#properties">primary · unique · index · hidden · protected · readonly</a>' },
+            { k: 'clock', v: '<a class="ref" href="/docs/reference/models/#timestamps">@CreatedAt / @UpdatedAt, written by the database</a>' },
+          ]}
+        />
+        <Pillar
+          clause=":Reads"
+          tone="blue"
+          title="CRUD and reads"
+          rows={[
+            { k: 'crud', v: '<a class="ref" href="/docs/api-reference/">facade plus getRepository(Person): find, upsert, patch, countBy</a>' },
+            { k: 'validate', v: '<a class="ref" href="/docs/reference/models/#validation">Zod on every write path, all failures in one error</a>' },
+            { k: 'edges', v: '<a class="ref" href="/docs/reference/relationships/">@OneToMany · @StartNode / @EndNode · relate() · detach()</a>' },
+            { k: 'reads', v: '<a class="ref" href="/docs/reference/relationships/#read-models">@RelatedMany · @RelationshipCount · @Computed, one query</a>' },
+          ]}
+        />
+        <Pillar
+          clause=":Ops"
+          title="Schema and operations"
+          rows={[
+            { k: 'schema', v: '<a class="ref" href="/why-ogm/#drift">installSchema() → schemaDrift() → applySchemaDrift()</a>' },
+            { k: 'safety', v: '<a class="ref" href="/docs/api-reference/">transactions · batches · @Version · @SoftDelete</a>' },
+            { k: 'hooks', v: '<a class="ref" href="/docs/api-reference/">observers · lifecycle events · cursor and offset pagination</a>' },
+            { k: 'errors', v: '<a class="ref" href="/why-ogm/#errors">ConstraintViolationError · TransientError · OptimisticLockError</a>' },
+          ]}
+        />
+        <Pillar
+          clause=":Search"
+          tone="blue"
+          title="Search, vectors and agents"
+          accent
+          rows={[
+            { k: 'vector', v: '<a class="ref" href="/docs/reference/search/#vector">@Vector({ dimensions }) and knn() over a vector index</a>' },
+            { k: 'text', v: '<a class="ref" href="/docs/reference/search/#fulltext">search() with scores · toFulltextQuery() sanitises input</a>' },
+            { k: 'agents', v: '<a class="ref" href="/agents/">ontologyMarkdown() grounds Text2Cypher and MCP</a>' },
+            { k: 'testing', v: '<a class="ref" href="/docs/api-reference/">factories · seeders · wipe() · testId()</a>' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <TwoStyles />
+  <OneQuery />
+  <Caveats />
+  <FourSteps />
+</Base>

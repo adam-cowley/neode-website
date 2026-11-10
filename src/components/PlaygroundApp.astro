@@ -1,0 +1,191 @@
+---
+import { recipes } from '../lib/recipes'
+import { highlightTS } from '../lib/highlight'
+
+interface Props {
+  initialRecipe?: string
+}
+const { initialRecipe = 'quickstart' } = Astro.props
+const initial = recipes.find((r) => r.id === initialRecipe) ?? recipes[0]
+const initialHtml = highlightTS(initial.source)
+---
+
+<div class="pg" data-choreo-root data-recipe={initial.id}>
+  <!-- toolbar: this IS the header on the playground -->
+  <div class="pg-bar">
+    <a href="/" style="display:flex;align-items:center;gap:8px;color:var(--text);text-decoration:none;font-weight:700;font-size:19px;min-height:44px" aria-label="neode home">
+      <svg width="26" height="26" viewBox="0 0 30 30" aria-hidden="true">
+        <path d="M9 20 L21 10" stroke="var(--blue)" stroke-width="2" fill="none"></path>
+        <rect x="2" y="14" width="12" height="12" rx="4" fill="var(--amber)"></rect>
+        <rect x="17" y="3" width="12" height="12" rx="4" fill="var(--blue)"></rect>
+      </svg>
+      neode
+    </a>
+    <a class="nl" href="/examples/" style="min-height:0">Examples</a>
+    <a class="nl" href="/docs/" style="min-height:0">Docs</a>
+    <button data-theme-toggle class="btn btn-g" style="min-height:36px;padding:0 12px" aria-label="Toggle dark or light theme">
+      <span data-theme-toggle-label>☾</span>
+    </button>
+
+    <label for="recipe" class="sr-only">Cookbook recipe</label>
+    <select id="recipe" data-choreo-select style="min-height:44px;padding:0 12px;border-radius:10px;background:var(--bg);color:var(--text);border:1px solid var(--line);font-family:inherit;font-size:13px;cursor:pointer">
+      {recipes.map((r) => <option value={r.id} selected={r.id === initial.id}>{r.id}</option>)}
+    </select>
+    <span style="font-size:13px;color:var(--mute)" data-choreo-filename>{initial.id}.ts</span>
+    <span style="font-size:12px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:4px 12px" class="pg-chip">playback · verified Neo4j run</span>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-p" data-choreo-run>Run <span style="font-weight:400;opacity:.8">⌘↵</span></button>
+      <button class="btn btn-g" data-choreo-reset>Reset</button>
+      <button class="btn btn-g" data-choreo-share>Share</button>
+    </div>
+  </div>
+
+  <!-- panes: fill the viewport, each scrolls internally, page never scrolls -->
+  <main class="pg-panes">
+    <!-- editor -->
+    <section class="pg-pane" style="display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden" aria-label="Editor">
+      <div class="pane-head">
+        <span style="font-size:13px;color:var(--mute)">TypeScript</span>
+        <span style="font-size:12px;color:var(--mute);margin-left:auto">edits stay in this tab · the link carries your code in the URL hash</span>
+      </div>
+      <div class="ed-wrap" style="flex:1;min-height:0">
+        <pre class="ed-hl" aria-hidden="true"><code set:html={initialHtml} /></pre>
+        <textarea
+          class="ed"
+          data-choreo-editor
+          wrap="off"
+          spellcheck="false"
+          aria-label="Code editor"
+        >{initial.source.trim()}</textarea>
+      </div>
+      <div style="border-top:1px solid var(--line);padding:8px 16px;font-size:12px;color:var(--mute);display:flex;flex-wrap:wrap;gap:8px 20px">
+        <a class="ref" href="/examples/">Browse the cookbook</a>
+        <span style="margin-left:auto">playback replays the recipe's verified Neo4j run</span>
+      </div>
+    </section>
+
+    <!-- right column -->
+    <div style="display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0">
+      <!-- graph -->
+      <section class="pg-pane" style="flex:0 1 46%;min-height:0;overflow:hidden;display:flex;flex-direction:column" aria-label="Graph view">
+        <div class="pane-head">
+          <span style="font-size:13px">graph</span>
+          <span style="font-size:12px;color:var(--mute);margin-left:auto">Goodfellas graph · seeded on boot</span>
+        </div>
+        <div style="flex:1;min-height:0;overflow:auto;padding:14px 16px 6px">
+          <svg data-choreo-graph role="img" aria-label="Live graph of the seeded movie graph" style="width:100%;height:auto;display:block;min-height:240px"></svg>
+        </div>
+        <div style="padding:0 16px 14px;display:flex;flex-direction:column;gap:10px">
+          <div data-choreo-props style="border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:12px 16px;font-size:13px">
+            <div style="color:var(--amber);font-weight:700;margin-bottom:6px" data-choreo-props-title>:Node</div>
+            <div style="color:var(--mute)" data-choreo-props-hint>Click a node to see its captured properties.</div>
+            <div data-choreo-props-rows></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- output -->
+      <section class="pg-pane" style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column" aria-label="Output">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;background:var(--surf2);border-bottom:1px solid var(--line);padding:0 6px" role="tablist">
+          <button class="tab" role="tab" data-choreo-tab="result" aria-selected="true">Result</button>
+          <button class="tab" role="tab" data-choreo-tab="cypher" aria-selected="false">Cypher</button>
+          <button class="tab" role="tab" data-choreo-tab="validation" aria-selected="false">Validation</button>
+          <span style="margin-left:auto;padding:0 12px;font-size:12px;color:var(--mute)" data-choreo-status></span>
+        </div>
+        <div style="padding:16px;flex:1;min-height:0;overflow:auto">
+          <div data-choreo-panel="result">
+            <table style="width:100%;border-collapse:collapse;font-size:13px">
+              <thead>
+                <tr style="text-align:left;color:var(--mute)">
+                  <th style="padding:6px 10px;font-weight:500">#</th>
+                  <th style="padding:6px 10px;font-weight:500">statement</th>
+                  <th style="padding:6px 10px;font-weight:500">duration</th>
+                </tr>
+              </thead>
+              <tbody data-choreo-steps></tbody>
+            </table>
+          </div>
+          <div data-choreo-panel="cypher" hidden>
+            <div style="font-size:11px;color:var(--amber);letter-spacing:.08em;margin-bottom:10px">QUERY_EXECUTED</div>
+            <div data-choreo-cypher-list style="display:flex;flex-direction:column;gap:10px"></div>
+          </div>
+          <div data-choreo-panel="validation" hidden data-choreo-validation class="pg-validation"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  import { choreograph } from '../scripts/choreograph'
+
+  document.querySelectorAll<HTMLElement>('.pg[data-choreo-root]').forEach((root) => {
+    const fromHash = new URLSearchParams(location.hash.slice(1)).get('recipe') ?? undefined
+    const fromQuery = new URLSearchParams(location.search).get('recipe') ?? undefined
+    choreograph(root, { mode: 'full', recipe: fromHash ?? fromQuery ?? root.dataset.recipe ?? 'quickstart' })
+  })
+</script>
+
+<style>
+  .pg {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .pg-bar {
+    background: var(--surf);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 16px;
+    padding: 8px 16px;
+    flex: 0 0 auto;
+  }
+  .pg-panes {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(560px, 100%), 1fr));
+    grid-template-rows: minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+    align-items: stretch;
+  }
+  .pg-pane {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surf);
+    overflow: hidden;
+  }
+  .pane-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    padding: 6px 14px;
+    background: var(--surf2);
+    border-bottom: 1px solid var(--line);
+    min-height: 44px;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+  }
+  .pg-validation:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 13px;
+  }
+  @media (max-width: 900px) {
+    /* stacked: editor on top, graph+output below, page still never scrolls */
+    .pg-panes {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) minmax(0, 1.2fr);
+    }
+    .pg-chip {
+      display: none;
+    }
+  }
+</style>
