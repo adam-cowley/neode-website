@@ -52,9 +52,9 @@ const META: Record<string, { title: string; blurb: string }> = {
     title: 'search-fulltext-vector',
     blurb: 'Full-text search with relevance scores and k-nearest-neighbour vector search over declared indexes.',
   },
-  'batch-and-transactions': {
-    title: 'batch-and-transactions',
-    blurb: 'All-or-nothing batches with per-statement errors, and explicit transactions that commit or roll back as one.',
+  'run-all-and-transactions': {
+    title: 'run-all-and-transactions',
+    blurb: 'All-or-nothing batches with per-statement errors (runAll), and explicit transactions that commit or roll back as one.',
   },
   'multi-database': {
     title: 'multi-database',

@@ -23,6 +23,7 @@
   "devDependencies": {
     "@playwright/test": "1.65.0",
     "@types/node": "^24.0.0",
+    "dotenv": "^16.6.1",
     "esbuild": "^0.25.0",
     "neo4j-driver": "^6.0.0",
     "typescript": "^5.8.0"
