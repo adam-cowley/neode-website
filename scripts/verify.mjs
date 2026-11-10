@@ -34,6 +34,7 @@ const URI = `bolt://localhost:${PORT}`
 const AUTH = { user: 'neo4j', password: 'verify-neode' }
 
 const RECIPES = [
+  'bulk-import',
   'quickstart',
   'crud-collection',
   'relationships',

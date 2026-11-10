@@ -24,6 +24,10 @@ export interface Recipe {
 
 // Recipe metadata: titles and blurbs distilled from the cookbook headers
 const META: Record<string, { title: string; blurb: string }> = {
+  'bulk-import': {
+    title: 'bulk-import',
+    blurb: 'CSV/JSON rows into createMany()/mergeMany(): rowToProperties() maps and validates each row without throwing, batches stream with backpressure, re-runs merge instead of duplicating.',
+  },
   quickstart: {
     title: 'quickstart',
     blurb: 'The four-step tour from the README — define a model, then create, find, update, delete.',
