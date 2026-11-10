@@ -13,7 +13,10 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 const site = resolve(here, '..')
 // The website lives beside the neode-ogm package in the workspace
-const repo = resolve(site, '../neode-ogm')
+// NEODE_REPO points sync at a branch checkout (e.g. a worktree) instead of
+// the sibling main checkout — used when the site must sync content that is
+// still in review on the library side.
+const repo = resolve(site, process.env.NEODE_REPO ?? '../neode-ogm')
 
 const cookbookDest = join(site, 'src/content/cookbook')
 const docsDest = join(site, 'src/content/docs')
@@ -23,7 +26,7 @@ mkdirSync(join(site, 'public'), { recursive: true })
 mkdirSync(join(site, 'src/lib/generated'), { recursive: true })
 
 // 1. Cookbook sources, byte-for-byte
-const files = ['crud-collection.ts', 'relationships.ts', 'eager-read-models.ts', 'validation.ts', 'schema-sync.ts', 'search-fulltext-vector.ts', 'batch-and-transactions.ts', 'multi-database.ts', 'server-startup.ts']
+const files = ['crud-collection.ts', 'relationships.ts', 'eager-read-models.ts', 'validation.ts', 'schema-sync.ts', 'search-fulltext-vector.ts', 'run-all-and-transactions.ts', 'multi-database.ts', 'server-startup.ts']
 for (const f of files) {
   const src = join(repo, 'examples/cookbook', f)
   if (!existsSync(src)) throw new Error(`cookbook missing: ${src}`)

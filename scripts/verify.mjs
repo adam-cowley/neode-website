@@ -22,7 +22,7 @@ import { build } from 'esbuild'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const site = resolve(here, '..')
-const repoDist = resolve(site, '../neode-ogm/dist/index.mjs')
+const repoDist = resolve(site, `${process.env.NEODE_REPO ?? '../neode-ogm'}/dist/index.mjs`)
 const work = join(site, '.verify')
 const out = join(site, 'src/lib/generated')
 mkdirSync(work, { recursive: true })
@@ -41,7 +41,7 @@ const RECIPES = [
   'validation',
   'schema-sync',
   'search-fulltext-vector',
-  'batch-and-transactions',
+  'run-all-and-transactions',
   'multi-database',
   'server-startup',
 ]
@@ -228,7 +228,7 @@ const meta = {
   validation: { needsWipe: true },
   'schema-sync': { needsWipe: true },
   'search-fulltext-vector': { needsWipe: true },
-  'batch-and-transactions': { needsWipe: true },
+  'run-all-and-transactions': { needsWipe: true },
   'multi-database': { needsWipe: true },
   'server-startup': { needsWipe: false },
 }
