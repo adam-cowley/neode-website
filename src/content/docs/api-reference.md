@@ -526,7 +526,14 @@ neode.findById<T>(constructor, elementId: string, database?): Promise<T | undefi
 // By the node's elementId.
 
 neode.get<T>(constructor, params, limit?, skip?, database?): Promise<T[]>
-// Property match. Unknown keys are ignored.
+// Property match against the model's DECLARED properties — the params are
+// a typed `WhereFilter<C>` bag (NTS-646): a bare value filters by equality,
+// an operator object filters through the Builder's operators:
+//   { age: { gte: 18 } } — eq, neq, gt, gte, lt, lte, in, contains,
+//   startsWith, endsWith, null — `between` composes as { gte, lte }.
+// A mistyped property or operator is a COMPILE ERROR (unknown keys are
+// ignored at runtime only for non-literal bags). Relationship keys take
+// nested filter bags: { pets: { kind: { startsWith: 'ca' } } }.
 
 neode.getFirst<T>(constructor, params, database?): Promise<T | undefined>
 
@@ -605,8 +612,8 @@ neode.merge<T>(constructor, properties?, database?): Promise<T | undefined>
 // MERGE on the schema's merge fields (unique/primary); entity values in the
 // properties create relationships (routed through save()).
 
-neode.first<T>(constructor, key: string | Record<string, unknown>, value?, database?): Promise<T | undefined>
-// Alias of getFirst: a params object, or key + value.
+neode.first<T>(constructor, key: string | WhereFilter<T>, value?, database?): Promise<T | undefined>
+// Alias of getFirst: a params object (typed, NTS-646), or key + value.
 
 neode.query(): Builder // a fresh query Builder (see Query builder)
 neode.close(): Promise<void>
@@ -626,6 +633,8 @@ neode.dropVectorIndexes(definitions): Promise<SchemaResult[]>
 neode.createMany<T>(constructor, rows?, options?): Promise<BulkChunk<T>[]>
 neode.mergeMany<T>(constructor, rows?, options?): Promise<BulkChunk<T>[]>
 neode.paginate<T>(constructor, filter?, options: PaginateOptions): Promise<Page<T> | CursorPage<T>>
+// `filter` is the typed WhereFilter bag (NTS-646); keyset mode (after/before)
+// takes equality values only — operator objects are rejected there.
 
 neode.runCypherScript(script, options?): Promise<QueryOutput[]>
 neode.ontology(): Ontology
@@ -774,7 +783,10 @@ neode.on(EventType.NODE_CREATED, (entity) => console.log('created', entity))
 const people = neode.getRepository(Person)
 
 await people.save(adam)
-await people.findAll({ age: 30 }, { order: { name: 'DESC' }, limit: 10, skip: 0 })
+await people.findAll({ age: { gte: 30 } }, { order: { name: 'DESC' }, limit: 10, skip: 0 })
+// the params are the typed WhereFilter bag (NTS-646) — equality values or
+// operator objects keyed to the model's declared properties, nested bags
+// under relationship keys.
 await people.count({ age: 30 })
 ```
 
@@ -1235,7 +1247,7 @@ const byId = await service.findById(Learner, schema, elementId)
 - `hasProjectedProperties(schema)` — true when any property of the model projects a read-model value.
 - `hydrateProjection(schema, constructor, projection)` — hydrate one row of a projection read: the projected values land on the entity through the regular hydration switch, then projected kinds (counts, exists, label predicates, expressions, computed) are post-processed.
 
-`ProjectionService` exposes the same match / where surface as the plain query services (`get`/`find`/`findById`); object values on `@RelatedOne` / `@RelatedMany` filter keys traverse to the related node (`{ course: { slug: 'x' } }`).
+`ProjectionService` exposes the same match / where surface as the plain query services (`get`/`find`/`findById`); object values on `@RelatedOne` / `@RelatedMany` filter keys traverse to the related node (`{ course: { slug: 'x' } }` — flat equality or operator objects, NTS-646).
 
 ## Bulk writes & pagination
 
