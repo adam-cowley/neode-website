@@ -590,7 +590,8 @@ neode.first<T>(constructor, key: string | Record<string, unknown>, value?, datab
 neode.query(): Builder // a fresh query Builder (see Query builder)
 neode.close(): Promise<void>
 
-neode.search<T>(constructor, indexName, query, limit?): Promise<ScoredEntity<T>[]>
+neode.search<T>(constructor, indexName, query, limit?, filters?, database?): Promise<ScoredEntity<T>[]>
+// `database` targets another database per call (wins over setDatabase()).
 neode.knn<T>(constructor, indexName, vector, k, mode?): Promise<ScoredEntity<T>[]>
 
 neode.inspectSchema(options?: InspectOptions): Promise<SchemaInspection>
@@ -605,6 +606,8 @@ neode.dropVectorIndexes(definitions): Promise<SchemaResult[]>
 neode.createMany<T>(constructor, rows?, options?): Promise<BulkChunk<T>[]>
 neode.mergeMany<T>(constructor, rows?, options?): Promise<BulkChunk<T>[]>
 neode.paginate<T>(constructor, filter?, options: PaginateOptions): Promise<Page<T> | CursorPage<T>>
+// PaginateOptions accepts a `database` per-call override (wins over
+// setDatabase()) — as does findManyAndCount()'s options.
 
 neode.runCypherScript(script, options?): Promise<QueryOutput[]>
 neode.ontology(): Ontology
