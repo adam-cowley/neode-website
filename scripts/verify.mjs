@@ -222,6 +222,7 @@ const { enterprise } = await ensureContainer()
 await waitReachable()
 
 const meta = {
+  'bulk-import': { needsWipe: true },
   quickstart: { needsWipe: true },
   'crud-collection': { needsWipe: true },
   relationships: { needsWipe: true },
