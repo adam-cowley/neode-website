@@ -17,22 +17,6 @@ export class Movie {
 
 const movie = await neode.find(Movie, title, { with: { actors: true } })`
 
-const CARDINALITY = `@NodeEntity()
-export class Person {
-  @Uuid({ primary: true })
-  id: string
-
-  @OneToOne({
-    type: 'LIVES_AT',
-    target: () => Address,
-    direction: 'out',
-    cardinality: 'one',          // at most one edge — a second relate() throws
-    enforce: 'currentOccupantId', // @Unique property on Address
-    claimConflict: 'throw',       // 'refuse' (default) | 'detach' | 'throw'
-  })
-  address: Address | undefined
-}`
-
 const toc = [
   { href: '#eager', label: 'Eager loading' },
   { href: '#cardinality', label: 'Cardinality & claims' },
@@ -43,7 +27,7 @@ const toc = [
 ---
 
 <Base title="neode — Relationships">
-  <DocsShell current="relationships" toc={toc} prev={{ href: 'models', label: 'Defining models' }} next={{ href: 'traversals', label: 'Traversals' }}>
+  <DocsShell current="relationships" toc={toc} prev={{ href: 'models', label: 'Defining models' }} next={{ href: 'cardinality', label: 'Cardinality & claims' }}>
     <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">{page.title}</h1>
     <p class="txt" style="font-size:18px">
       <code>@OneToOne</code> and <code>@OneToMany</code> describe edges from a model. Mark one eager and neode loads it in
@@ -56,24 +40,12 @@ const toc = [
 
     <h2 class="sec" id="cardinality">Cardinality &amp; claims</h2>
     <p class="txt">
-      <code>cardinality</code> is a write-time guard: <code>'one'</code> / <code>'zeroOrOne'</code> relationships hold at
-      most one edge per node — a second <code>relate()</code> throws <code>CardinalityViolationError</code>. Swap an edge
-      with <code>syncEdges()</code> or <code>replaceRelationship()</code>; both detach first.
+      Relationships have two ends and both can be constrained. <code>cardinality</code> guards the forward side (one
+      target per source) at write time; <code>enforce</code> turns the inverse side (one source per target) into a
+      <em>database-level</em> guarantee backed by a uniqueness constraint — raw Cypher included — with
+      <code>claimConflict</code> picking what happens when the target is already taken.
     </p>
-    <p class="txt">
-      <code>enforce</code> turns the <em>inverse</em> side into a database-level guarantee. It names a
-      <code>@Unique</code> property on the target model, and every write path keeps it pointed at the source node's
-      primary key — the target's uniqueness constraint then rejects a second node claiming it, raw Cypher included.
-      <code>replaceRelationship()</code> and <code>syncEdges()</code> move the claim atomically, and
-      <code>delete()</code> releases it. <code>claimConflict</code> picks what <code>relate()</code> does when the target
-      is already claimed by a different source: <code>'refuse'</code> (default — resolves <code>undefined</code>),
-      <code>'detach'</code> (the claim moves) or <code>'throw'</code>.
-    </p>
-    <Code code={CARDINALITY} />
-    <p class="txt">
-      The forward side (one target per source) stays an application-level guard: Neo4j has no edge-count constraint, so
-      serialize writers when it must hold under concurrency.
-    </p>
+    <p class="txt"><a class="ref" href="/docs/reference/cardinality/">Cardinality &amp; claims — the full reference →</a></p>
 
     <h2 class="sec" id="edges">Relationship entities</h2>
     <p class="txt">
