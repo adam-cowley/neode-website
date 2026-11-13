@@ -30,45 +30,92 @@ const isActive = (href: string): boolean => current === href.replace(/\/$/, '')
         neode
       </a>
       <AlphaBadge />
-      {
-        !bare && (
-          <nav style="display:flex;flex-wrap:wrap;gap:0 24px;margin-left:auto" aria-label="Main">
-            {links.map((l) => (
-              <a class="nl" href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
-                {l.label}
-              </a>
-            ))}
-          </nav>
-        )
-      }
-      {
-        bare && (
-          <nav style="display:flex;flex-wrap:wrap;gap:0 18px;margin-left:12px" aria-label="Main">
-            {links.map((l) => (
-              <a class="nl" href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
-                {l.label}
-              </a>
-            ))}
-          </nav>
-        )
-      }
+      <nav id="main-nav" class:list={['main-nav', { bare }]} aria-label="Main">
+        {links.map((l) => (
+          <a class="nl" href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
+            {l.label}
+          </a>
+        ))}
+      </nav>
       <button
         data-theme-toggle
-        class="btn btn-g"
-        style="min-height:36px;padding:0 12px;margin-left:auto"
+        class="btn btn-g nav-toggle"
         aria-label="Toggle dark or light theme"
       >
         <span id="theme-toggle-label">☾</span>
       </button>
+      <button
+        data-menu-toggle
+        class="btn btn-g nav-toggle nav-menu"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
     </div>
   </div>
 </header>
+
+<style>
+  .main-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+    margin-left: auto;
+  }
+  .main-nav.bare {
+    gap: 0 18px;
+    margin-left: 12px;
+  }
+  .nav-toggle {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0 12px;
+    margin-left: auto;
+    justify-content: center;
+  }
+  .nav-menu {
+    display: none;
+    margin-left: 0;
+  }
+  @media (max-width: 720px) {
+    header .wrap > div {
+      gap: 4px 12px !important;
+    }
+    .nav-menu {
+      display: inline-flex;
+    }
+    .main-nav,
+    .main-nav.bare {
+      display: none;
+      order: 10;
+      flex: 1 0 100%;
+      flex-direction: column;
+      gap: 0;
+      margin-left: 0;
+      padding-bottom: 8px;
+    }
+    .main-nav.open {
+      display: flex;
+    }
+    .main-nav .nl {
+      min-height: 48px;
+    }
+  }
+</style>
 
 <script>
   const paint = (btn: Element | null): void => {
     const label = btn?.querySelector('#theme-toggle-label, [data-theme-toggle-label]')
     if (label) label.textContent = document.documentElement.dataset.theme === 'light' ? '☀' : '☾'
   }
+  const menuBtn = document.querySelector('[data-menu-toggle]')
+  const menu = document.getElementById('main-nav')
+  menuBtn?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('open') ?? false
+    menuBtn.setAttribute('aria-expanded', String(open))
+  })
   document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'

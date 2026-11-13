@@ -21,12 +21,12 @@ test('quickstart run: the created graph stays on screen', async ({ page }) => {
 
   // Step counter advances and finishes (generous timeout: the run steps at
   // ~700ms each and parallel specs steal CPU)
-  await expect(page.locator('[data-choreo-status]')).toContainText('done — 10 statements', { timeout: 30_000 })
+  await expect(page.locator('[data-choreo-status]')).toContainText(/done — \d+ statements/u, { timeout: 30_000 })
 
-  // Steps table has 10 rows; Cypher tab lists the captured statements
-  await expect(page.locator('[data-choreo-steps] tr')).toHaveCount(10)
+  // Steps table has 8 rows; Cypher tab lists the captured statements
+  await expect(page.locator('[data-choreo-steps] tr')).toHaveCount(8)
   await page.getByRole('tab', { name: 'Cypher' }).click()
-  await expect(page.locator("[data-choreo-panel='cypher']").locator('> div > div')).toHaveCount(10)
+  await expect(page.locator("[data-choreo-panel='cypher']").locator('> div > div')).toHaveCount(8)
   await expect(page.locator("[data-choreo-panel='cypher']")).toContainText("CREATE (this:Movie { title: $this_title })")
 
   // The eager read hydrated Ray Liotta as an actor of Goodfellas

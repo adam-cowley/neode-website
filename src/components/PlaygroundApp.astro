@@ -23,27 +23,32 @@ const initialHtml = highlightTS(initial.source)
     </a>
     <a class="nl" href="/examples/" style="min-height:0">Examples</a>
     <a class="nl" href="/docs/" style="min-height:0">Docs</a>
-    <button data-theme-toggle class="btn btn-g" style="min-height:36px;padding:0 12px" aria-label="Toggle dark or light theme">
+    <button data-theme-toggle class="btn btn-g" style="min-height:44px;min-width:44px;padding:0 12px;justify-content:center" aria-label="Toggle dark or light theme">
       <span data-theme-toggle-label>☾</span>
     </button>
 
     <label for="recipe" class="sr-only">Cookbook recipe</label>
-    <select id="recipe" data-choreo-select style="min-height:44px;padding:0 12px;border-radius:10px;background:var(--bg);color:var(--text);border:1px solid var(--line);font-family:inherit;font-size:13px;cursor:pointer">
+    <select id="recipe" data-choreo-select class="pg-select" style="min-height:44px;padding:0 12px;border-radius:10px;background:var(--bg);color:var(--text);border:1px solid var(--line);font-family:inherit;font-size:13px;cursor:pointer">
       {recipes.map((r) => <option value={r.id} selected={r.id === initial.id}>{r.id}</option>)}
     </select>
     <span style="font-size:13px;color:var(--mute)" data-choreo-filename>{initial.id}.ts</span>
     <span style="font-size:12px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:4px 12px" class="pg-chip">playback · verified Neo4j run</span>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-p" data-choreo-run>Run <span style="font-weight:400;opacity:.8">⌘↵</span></button>
+    <div class="pg-actions" style="display:flex;gap:8px">
+      <button class="btn btn-p" data-choreo-run>Run <span class="pg-kbd" style="font-weight:400;opacity:.8">⌘↵</span></button>
       <button class="btn btn-g" data-choreo-reset>Reset</button>
       <button class="btn btn-g" data-choreo-share>Share</button>
     </div>
   </div>
 
   <!-- panes: fill the viewport, each scrolls internally, page never scrolls -->
-  <main class="pg-panes">
+  <div class="pg-mtabs" role="tablist" aria-label="Playground view">
+    <button class="tab" role="tab" data-pg-view="editor" aria-selected="true">Editor</button>
+    <button class="tab" role="tab" data-pg-view="graph" aria-selected="false">Graph</button>
+    <button class="tab" role="tab" data-pg-view="output" aria-selected="false">Output</button>
+  </div>
+  <main class="pg-panes" data-view="editor">
     <!-- editor -->
-    <section class="pg-pane" style="display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden" aria-label="Editor">
+    <section class="pg-pane pg-editor" style="display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden" aria-label="Editor">
       <div class="pane-head">
         <span style="font-size:13px;color:var(--mute)">TypeScript</span>
         <span style="font-size:12px;color:var(--mute);margin-left:auto">edits stay in this tab · the link carries your code in the URL hash</span>
@@ -58,16 +63,16 @@ const initialHtml = highlightTS(initial.source)
           aria-label="Code editor"
         >{initial.source.trim()}</textarea>
       </div>
-      <div style="border-top:1px solid var(--line);padding:8px 16px;font-size:12px;color:var(--mute);display:flex;flex-wrap:wrap;gap:8px 20px">
+      <div class="pg-edfoot" style="border-top:1px solid var(--line);padding:8px 16px;font-size:12px;color:var(--mute);display:flex;flex-wrap:wrap;gap:8px 20px">
         <a class="ref" href="/examples/">Browse the cookbook</a>
         <span style="margin-left:auto">playback replays the recipe's verified Neo4j run</span>
       </div>
     </section>
 
     <!-- right column -->
-    <div style="display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0">
+    <div class="pg-right" style="display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0">
       <!-- graph -->
-      <section class="pg-pane" style="flex:0 1 46%;min-height:0;overflow:hidden;display:flex;flex-direction:column" aria-label="Graph view">
+      <section class="pg-pane pg-graph" style="flex:0 1 46%;min-height:0;overflow:hidden;display:flex;flex-direction:column" aria-label="Graph view">
         <div class="pane-head">
           <span style="font-size:13px">graph</span>
           <span style="font-size:12px;color:var(--mute);margin-left:auto">Goodfellas graph · seeded on boot</span>
@@ -85,7 +90,7 @@ const initialHtml = highlightTS(initial.source)
       </section>
 
       <!-- output -->
-      <section class="pg-pane" style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column" aria-label="Output">
+      <section class="pg-pane pg-output" style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column" aria-label="Output">
         <div style="display:flex;flex-wrap:wrap;align-items:center;background:var(--surf2);border-bottom:1px solid var(--line);padding:0 6px" role="tablist">
           <button class="tab" role="tab" data-choreo-tab="result" aria-selected="true">Result</button>
           <button class="tab" role="tab" data-choreo-tab="cypher" aria-selected="false">Cypher</button>
@@ -122,6 +127,17 @@ const initialHtml = highlightTS(initial.source)
   document.querySelectorAll<HTMLElement>('.pg[data-choreo-root]').forEach((root) => {
     const fromHash = new URLSearchParams(location.hash.slice(1)).get('recipe') ?? undefined
     const fromQuery = new URLSearchParams(location.search).get('recipe') ?? undefined
+    const panes = root.querySelector<HTMLElement>('.pg-panes')
+    const views = root.querySelectorAll<HTMLElement>('[data-pg-view]')
+    const setView = (v: string): void => {
+      if (panes) panes.dataset.view = v
+      views.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.pgView === v)))
+    }
+    views.forEach((b) => b.addEventListener('click', () => setView(b.dataset.pgView ?? 'editor')))
+    // on small screens, running jumps to the graph so the result is visible
+    root.querySelector('[data-choreo-run]')?.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 900px)').matches) setView('graph')
+    })
     choreograph(root, { mode: 'full', recipe: fromHash ?? fromQuery ?? root.dataset.recipe ?? 'quickstart' })
   })
 </script>
@@ -178,13 +194,64 @@ const initialHtml = highlightTS(initial.source)
     gap: 12px;
     font-size: 13px;
   }
+  .pg-mtabs {
+    display: none;
+  }
   @media (max-width: 900px) {
-    /* stacked: editor on top, graph+output below, page still never scrolls */
+    /* one pane at a time via tabs; page still never scrolls */
     .pg-panes {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: minmax(0, 1fr) minmax(0, 1.2fr);
+      grid-template-rows: minmax(0, 1fr);
     }
-    .pg-chip {
+    .pg-chip,
+    .pg-bar [data-choreo-filename] {
+      display: none;
+    }
+    .pg-bar {
+      gap: 4px 12px;
+      padding: 6px 12px;
+    }
+    .pg-select {
+      flex: 1 1 96px;
+      min-width: 0;
+    }
+    /* recipe select + Run/Reset/Share share one row */
+    .pg-actions {
+      flex-wrap: nowrap;
+    }
+    .pg-actions .btn {
+      padding: 0 12px;
+      min-height: 44px;
+    }
+    .pg-kbd {
+      display: none;
+    }
+    .pg-edfoot {
+      display: none !important;
+    }
+    .pg-mtabs {
+      display: flex;
+      background: var(--surf2);
+      border-bottom: 1px solid var(--line);
+      padding: 0 6px;
+      flex: 0 0 auto;
+    }
+    .pg-mtabs .tab {
+      flex: 1;
+      justify-content: center;
+    }
+    .pg-panes[data-view='editor'] .pg-right,
+    .pg-panes[data-view='graph'] .pg-editor,
+    .pg-panes[data-view='graph'] .pg-output,
+    .pg-panes[data-view='output'] .pg-editor,
+    .pg-panes[data-view='output'] .pg-graph {
+      display: none !important;
+    }
+    .pg-panes[data-view='graph'] .pg-graph,
+    .pg-panes[data-view='output'] .pg-output {
+      flex: 1 1 auto !important;
+    }
+    .pane-head span[style*='margin-left:auto'] {
       display: none;
     }
   }

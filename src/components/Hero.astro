@@ -1,54 +1,7 @@
 ---
 // Hero: headline + a living graph of the Goodfellas domain, drawn from
 // data at build time — border-trimmed edges with direction arrows.
-import { quadEdge, type Box, type Pt } from '../lib/graph-geometry'
-
-interface HeroNode {
-  key: string
-  label: 'Person' | 'Movie'
-  name: string
-  x: number
-  y: number
-  /** float animation stagger offset */
-  delay: number
-}
-
-const NODES: HeroNode[] = [
-  { key: 'ray', label: 'Person', name: 'Ray Liotta', x: 100, y: 130, delay: 0 },
-  { key: 'scorsese', label: 'Person', name: 'Martin Scorsese', x: 250, y: 340, delay: -4 },
-  { key: 'goodfellas', label: 'Movie', name: 'Goodfellas', x: 300, y: 170, delay: -1 },
-  { key: 'casino', label: 'Movie', name: 'Casino', x: 430, y: 430, delay: -5 },
-  { key: 'deniro', label: 'Person', name: 'Robert De Niro', x: 530, y: 250, delay: -3 },
-  { key: 'pesci', label: 'Person', name: 'Joe Pesci', x: 540, y: 100, delay: -2 },
-  { key: 'irishman', label: 'Movie', name: 'The Irishman', x: 120, y: 440, delay: -6 },
-]
-
-const EDGES: Array<{ from: string; to: string; type: string }> = [
-  { from: 'ray', to: 'goodfellas', type: 'ACTED_IN' },
-  { from: 'deniro', to: 'goodfellas', type: 'ACTED_IN' },
-  { from: 'pesci', to: 'goodfellas', type: 'ACTED_IN' },
-  { from: 'scorsese', to: 'goodfellas', type: 'DIRECTED' },
-  { from: 'deniro', to: 'casino', type: 'ACTED_IN' },
-  { from: 'pesci', to: 'casino', type: 'ACTED_IN' },
-  { from: 'scorsese', to: 'casino', type: 'DIRECTED' },
-  { from: 'deniro', to: 'irishman', type: 'ACTED_IN' },
-  { from: 'pesci', to: 'irishman', type: 'ACTED_IN' },
-  { from: 'scorsese', to: 'irishman', type: 'DIRECTED' },
-]
-
-const W = 112
-const H = 36
-const MW = 120
-const MH = 40
-const box = (n: HeroNode): Box => (n.label === 'Movie' ? { w: MW, h: MH } : { w: W, h: H })
-const centre = (n: HeroNode): Pt => ({ x: n.x, y: n.y })
-
-const drawn = EDGES.map((e) => {
-  const a = NODES.find((n) => n.key === e.from)!
-  const b = NODES.find((n) => n.key === e.to)!
-  const g = quadEdge(centre(a), box(a), centre(b), box(b))
-  return { ...e, ...g }
-})
+import HeroGraph from './HeroGraph.astro'
 
 const headline = 'Define your graph in TypeScript.'
 const accent = 'neode writes the Cypher.'
@@ -57,7 +10,7 @@ const sub =
 ---
 
 <section>
-  <div class="wrap" style="padding:72px 32px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:48px;align-items:center">
+  <div class="wrap" style="padding:clamp(36px,11vw,72px) var(--gutter) 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:48px;align-items:center">
     <div>
       <h1 style="margin:0;font-size:clamp(38px,5vw,58px);line-height:1.06;letter-spacing:-.02em;text-wrap:balance">
         {headline} <span style="color:var(--blue)">{accent}</span>
@@ -77,57 +30,8 @@ const sub =
       </div>
     </div>
     <div style="min-width:0">
-      <svg viewBox="0 0 640 520" role="img" aria-label="A graph of the Goodfellas cast: Ray Liotta, Robert De Niro and Joe Pesci acted in Goodfellas, Casino and The Irishman, directed by Martin Scorsese" style="width:100%;height:auto;display:block;overflow:visible">
-        <defs>
-          <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="6" result="b"></feGaussianBlur>
-            <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-          </filter>
-          <marker id="hero-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-            <path d="M0 0 L10 5 L0 10 z" fill="var(--blue)"></path>
-          </marker>
-        </defs>
-
-        <!-- base edges -->
-        <g fill="none" stroke="var(--line)" stroke-width="2">
-          {drawn.map((e) => <path d={e.path}></path>)}
-        </g>
-        <!-- animated flow overlay -->
-        <g fill="none" stroke="var(--blue)" stroke-width="3" filter="url(#glow)">
-          {drawn.map((e, i) => <path class="flow" d={e.path} style={`animation-delay:-${(i * 0.35).toFixed(2)}s`}></path>)}
-        </g>
-        <!-- direction arrows on top -->
-        <g>
-          {drawn.map((e) => (
-            <path d={e.path} fill="none" stroke="var(--blue)" stroke-width="2" marker-end="url(#hero-arr)" opacity="0.9"></path>
-          ))}
-        </g>
-
-        <!-- edge labels -->
-        <g font-size="10" fill="var(--mute)" font-weight="700" style="paint-order:stroke;stroke:var(--bg);stroke-width:3px">
-          {drawn.map((e) => <text x={e.label.x} y={e.label.y} text-anchor="middle">{e.type}</text>)}
-        </g>
-
-        <!-- nodes -->
-        <g font-size="12" font-weight="700" text-anchor="middle">
-          {NODES.map((n) => {
-            const movie = n.label === 'Movie'
-            return (
-              <g class="fl" style={`animation-delay:${n.delay}s`}>
-                <rect
-                  x={n.x - (movie ? MW : W) / 2}
-                  y={n.y - (movie ? MH : H) / 2}
-                  width={movie ? MW : W}
-                  height={movie ? MH : H}
-                  rx={movie ? 12 : 10}
-                  fill={movie ? 'var(--blue)' : 'var(--amber)'}
-                />
-                <text x={n.x} y={n.y + 4} fill={movie ? 'var(--onblue)' : 'var(--onnode)'}>{n.name}</text>
-              </g>
-            )
-          })}
-        </g>
-      </svg>
+      <div class="hg-d"><HeroGraph scale={1} uid="d" /></div>
+      <div class="hg-m"><HeroGraph scale={1.2} uid="m" /></div>
     </div>
   </div>
 </section>
@@ -147,3 +51,17 @@ const sub =
     })
   })
 </script>
+
+<style>
+  .hg-m {
+    display: none;
+  }
+  @media (max-width: 600px) {
+    .hg-d {
+      display: none;
+    }
+    .hg-m {
+      display: block;
+    }
+  }
+</style>

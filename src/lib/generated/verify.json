@@ -1,125 +1,119 @@
 {
-  "verifiedAt": "2026-11-10T19:29:23.997Z",
+  "verifiedAt": "2026-11-13T19:57:19.523Z",
   "backend": "Neo4j 5 Enterprise (Docker, :7689)",
   "neo4jVersion": "Neo4j/5.26.33",
   "results": {
     "quickstart": {
       "ok": true,
-      "ms": 915,
-      "output": "",
-      "error": "TypeError: value.toUpperCase is not a function\n    at toDirection (file:///Users/adam/neode/neode-website/.verify/quickstart.mjs:56720:17)\n    at new Relationship (file:///Users/adam/neode/neode-website/.verify/quickstart.mjs:57666:22)\n    at Builder2.relationship (file:///Users/adam/neode/neode-website/.verify/quickstart.mjs:59131:32)\n    at RelateService.relate (file:///Users/adam/neode/neode-website/.verify/quickstart.mjs:64073:35)\n    at Neode2.relate (file:///Users/adam/neode/neode-website/.verify/quickstart.mjs:66782:50)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async main (file:///Users/adam/neode/neode-website/.verify/quickstart.mjs:67559:5)",
+      "ms": 657,
+      "output": "Goodfellas: 1 actor(s) — Ray Liotta",
+      "error": "",
       "statements": [
         {
           "cypher": "CREATE (this:Person { id: $this_id, name: $this_name, age: $this_age })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "cdcb709d-4437-4b55-a5ee-66e604f229ba",
+            "this_id": "dfcc1c3e-feb3-43a8-b679-f476bb1cd3d9",
             "this_name": "Ray Liotta",
             "this_age": 40
           },
-          "duration": 223.298375
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
-          },
-          "duration": 38.64974999999998
+          "duration": 95.023667
         },
         {
           "cypher": "MATCH (this:Person { id: $this_id })\nRETURN this\nLIMIT 1",
           "params": {
-            "this_id": "cdcb709d-4437-4b55-a5ee-66e604f229ba"
+            "this_id": "dfcc1c3e-feb3-43a8-b679-f476bb1cd3d9"
           },
-          "duration": 139.25437500000004
+          "duration": 51.830667000000005
         },
         {
           "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
           },
-          "duration": 113.47716600000001
+          "duration": 30.18816700000002
         },
         {
           "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nSET this += $set_0\nRETURN this, elementId(this) AS __id",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7",
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0",
             "set_0": {
               "age": 41,
               "name": "Ray Liotta"
             }
           },
-          "duration": 72.79104099999995
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
-          },
-          "duration": 8.94520799999998
+          "duration": 39.54987500000004
         },
         {
           "cypher": "CREATE (this:Movie { title: $this_title })\nRETURN this, elementId(this) AS __id",
           "params": {
             "this_title": "Goodfellas"
           },
-          "duration": 59.128333
+          "duration": 26.398124999999993
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN \n     this { \n        .*\n        ,__EAGER_ID__: elementId(this)\n        ,__EAGER_LABELS__: labels(this)\n        ,actors: [ (this)<-[this_actors_rel:`ACTED_IN`]-(this_actors_node:Person) | \n         this_actors_node { \n                .*\n                ,__EAGER_ID__: elementId(this_actors_node)\n                ,__EAGER_LABELS__: labels(this_actors_node)\n        } ]\n    } AS this\nLIMIT 1",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:10"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
           },
-          "duration": 8.293042000000014
+          "duration": 102.92529099999996
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)<-[rel:`ACTED_IN`]-(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
+          },
+          "duration": 79.95016700000002
+        },
+        {
+          "cypher": "MATCH (this:Movie { title: $this_title })\nRETURN this { .*, __EAGER_ID__: elementId(this), __EAGER_LABELS__: labels(this), actors: [ (this)<-[this_actors_rel:`ACTED_IN`]-(this_actors_node:Person) | \n         this_actors_node { \n                .*\n                ,__EAGER_ID__: elementId(this_actors_node)\n                ,__EAGER_LABELS__: labels(this_actors_node)\n        } ] } AS this\nLIMIT 1",
+          "params": {
+            "this_title": "Goodfellas"
+          },
+          "duration": 56.174416000000065
         }
       ]
     },
     "crud-collection": {
       "ok": true,
-      "ms": 615,
-      "output": "found Adam / Adam / Adam of 1\n- Adam (31)\n[\n  {\n    \"_id\": \"4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2\",\n    \"_labels\": [\n      \"Person\"\n    ],\n    \"id\": \"1a91baa6-9ff4-4535-9163-5e278d015e16\",\n    \"name\": \"Adam\",\n    \"age\": 31\n  }\n]\n{\n  _id: '4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2',\n  _labels: [ 'Person' ],\n  id: '1a91baa6-9ff4-4535-9163-5e278d015e16',\n  name: 'Adam',\n  age: 30\n}",
+      "ms": 250,
+      "output": "found Adam / Adam / Adam of 1\n- Adam (31)\n[\n  {\n    \"_id\": \"4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2\",\n    \"_labels\": [\n      \"Person\"\n    ],\n    \"id\": \"043c0af4-c289-4f13-9884-9cd53d57fb37\",\n    \"name\": \"Adam\",\n    \"age\": 31\n  }\n]\n{\n  _id: '4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2',\n  _labels: [ 'Person' ],\n  id: '043c0af4-c289-4f13-9884-9cd53d57fb37',\n  name: 'Adam',\n  age: 30\n}",
       "error": "",
       "statements": [
         {
           "cypher": "CREATE (this:Person { id: $this_id, name: $this_name, age: $this_age })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "1a91baa6-9ff4-4535-9163-5e278d015e16",
+            "this_id": "043c0af4-c289-4f13-9884-9cd53d57fb37",
             "this_name": "Adam",
             "this_age": 30
           },
-          "duration": 35.011542000000006
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2"
-          },
-          "duration": 15.098000000000013
+          "duration": 14.60575
         },
         {
           "cypher": "MATCH (this:Person { id: $this_id })\nRETURN this\nLIMIT 1",
           "params": {
-            "this_id": "1a91baa6-9ff4-4535-9163-5e278d015e16"
+            "this_id": "043c0af4-c289-4f13-9884-9cd53d57fb37"
           },
-          "duration": 11.007332999999988
+          "duration": 4.671374999999998
         },
         {
           "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
           "params": {
             "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2"
           },
-          "duration": 42.974500000000006
+          "duration": 19.32487499999999
         },
         {
           "cypher": "MATCH (this:Person)\nWHERE (this.name = $where_this_name)\nRETURN this\nLIMIT 1",
           "params": {
             "where_this_name": "Adam"
           },
-          "duration": 85.549125
+          "duration": 22.665333999999987
         },
         {
           "cypher": "MATCH (this:Person)\nRETURN this\nORDER BY this.name\nLIMIT 10",
           "params": {},
-          "duration": 81.93070900000004
+          "duration": 38.531666
         },
         {
           "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nSET this += $set_0\nRETURN this, elementId(this) AS __id",
@@ -129,372 +123,324 @@
               "age": 31
             }
           },
-          "duration": 32.17991699999999
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2"
-          },
-          "duration": 24.293833000000006
+          "duration": 4.0445419999999785
         },
         {
           "cypher": "MATCH (this:Person)\nRETURN this",
           "params": {},
-          "duration": 91.41704199999998
+          "duration": 16.079000000000008
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
             "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2"
           },
-          "duration": 9.023500000000013
+          "duration": 32.43370899999999
         }
       ]
     },
     "relationships": {
       "ok": true,
-      "ms": 1403,
+      "ms": 353,
       "output": "Rex survived the owner: true",
       "error": "",
       "statements": [
         {
           "cypher": "CREATE (this:Person { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "23f35bda-20e2-4209-85dc-ac6318d5d6c3",
+            "this_id": "811abd4e-d084-44ca-a801-fd194fa93160",
             "this_name": "Adam"
           },
-          "duration": 58.398292
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
-          },
-          "duration": 7.300791000000004
+          "duration": 28.657916999999998
         },
         {
           "cypher": "CREATE (this:Pet { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "87e7a669-72fe-4437-b3ce-898541bedca5",
+            "this_id": "0deab8d1-807b-4c66-a714-5b5be9cc88dd",
             "this_name": "Rex"
           },
-          "duration": 30.85654200000002
+          "duration": 20.084290999999993
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`OWNS`]->(to)\nON CREATE SET rel.`since` = $set_0\nON MATCH SET rel.`since` = $set_1\nRETURN rel",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4",
+            "set_0": "2024-01-01",
+            "set_1": "2024-01-01"
           },
-          "duration": 8.720541999999995
-        },
-        {
-          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`OWNS`]->(to)\nSET rel.`since` = $set_0\nRETURN rel",
-          "params": {
-            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0",
-            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5",
-            "set_0": "2024-01-01"
-          },
-          "duration": 178.84462500000004
+          "duration": 49.30833299999999
         },
         {
           "cypher": "MATCH (from)-[rel:`OWNS`]->(to)\nWHERE (elementId(from) = $where_from_id AND elementId(to) = $where_to_id)\nDELETE rel",
           "params": {
-            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0",
-            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
           },
-          "duration": 242.150417
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
-          },
-          "duration": 80.70558300000005
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
-          },
-          "duration": 24.004708999999934
-        },
-        {
-          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`OWNS`]->(to)\nRETURN rel",
-          "params": {
-            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0",
-            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
-          },
-          "duration": 178.00183300000003
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nOPTIONAL MATCH (this)-[this_pets_rel:`OWNS`]->()\nDELETE this_pets_rel\nDETACH DELETE this",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
-          },
-          "duration": 128.0970830000001
-        },
-        {
-          "cypher": "MATCH (this:Pet)\nWHERE (this.name = $where_this_name)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_name": "Rex"
-          },
-          "duration": 50.44516700000008
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
-          },
-          "duration": 18.764208999999937
-        }
-      ]
-    },
-    "eager-read-models": {
-      "ok": true,
-      "ms": 965,
-      "output": "[ 'indexes', 'intro' ]\n{ title: 'Neo4j 101', status: 'ACTIVE' } [ 'intro' ] 1",
-      "error": "TransientError: ForsetiClient[transactionId=2460, clientId=2] can't acquire ExclusiveLock{owner=ForsetiClient[transactionId=2459, clientId=4]} on NODE_RELATIONSHIP_GROUP_DELETE(8) because holders of that lock are waiting for ForsetiClient[transactionId=2460, clientId=2].\n Wait list:ExclusiveLock[\nClient[2459] waits for [ForsetiClient[transactionId=2460, clientId=2]]]\n    at classifyError (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55550:10)\n    at withQueryContext (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55586:23)\n    at Neo4jTransactionHandle.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55727:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Object.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55808:14)\n    at async DeleteService.delete (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:61911:5)\n    at async Neode2.delete (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:67250:7)\n    at async Promise.all (index 0)\n    at async main (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:67671:5) {\n  isRetryable: true,\n  code: 'Neo.TransientError.Transaction.DeadlockDetected',\n  [cause]: Neo4jError2: ForsetiClient[transactionId=2460, clientId=2] can't acquire ExclusiveLock{owner=ForsetiClient[transactionId=2459, clientId=4]} on NODE_RELATIONSHIP_GROUP_DELETE(8) because holders of that lock are waiting for ForsetiClient[transactionId=2460, clientId=2].\n   Wait list:ExclusiveLock[\n  Client[2459] waits for [ForsetiClient[transactionId=2460, clientId=2]]]\n  \n      at captureStacktrace (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:6210:21)\n      at Result2.GenericResult2 (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:6229:25)\n      at new Result2 (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:6724:44)\n      at newCompletedResult (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:7427:14)\n      at Object.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:7211:18)\n      at Transaction2.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:7060:36)\n      at Neo4jTransactionHandle.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55721:36)\n      at file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55835:66\n      at Object.run (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:55808:20)\n      at DeleteService.delete (file:///Users/adam/neode/neode-website/.verify/eager-read-models.mjs:61911:23) {\n    constructor: [Function: Neo4jError2] {\n      isRetriable: [Function (anonymous)],\n      isRetryable: [Function (anonymous)]\n    },\n    cause: undefined,\n    gqlStatus: '50N05',\n    gqlStatusDescription: 'error: general processing exception - deadlock detected. Deadlock detected while trying to acquire locks. See log for more details.',\n    diagnosticRecord: {\n      OPERATION: '',\n      OPERATION_CODE: '0',\n      CURRENT_SCHEMA: '/',\n      _classification: 'TRANSIENT_ERROR'\n    },\n    classification: 'TRANSIENT_ERROR',\n    rawClassification: 'TRANSIENT_ERROR',\n    code: 'Neo.TransientError.Transaction.DeadlockDetected',\n    retriable: true,\n    retryable: true\n  }\n}",
-      "statements": [
-        {
-          "cypher": "CREATE (this:Course { id: $this_id, title: $this_title, status: $this_status })\nRETURN this, elementId(this) AS __id",
-          "params": {
-            "this_id": "f7d9fa5a-f880-4ed4-b65b-32af01f866bd",
-            "this_title": "Neo4j 101",
-            "this_status": "ACTIVE"
-          },
-          "duration": 90.346
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN \n     this { \n        .*\n        ,__EAGER_ID__: elementId(this)\n        ,__EAGER_LABELS__: labels(this)\n        ,lessons: [ (this)-[this_lessons_rel:`HAS_LESSON`]->(this_lessons_node:Lesson) | \n         this_lessons_node { \n                .*\n                ,__EAGER_ID__: elementId(this_lessons_node)\n                ,__EAGER_LABELS__: labels(this_lessons_node)\n        } ]\n    } AS this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
-          },
-          "duration": 52.92150000000001
-        },
-        {
-          "cypher": "CREATE (this:Lesson { id: $this_id, slug: $this_slug })\nRETURN this, elementId(this) AS __id",
-          "params": {
-            "this_id": "42584f25-1dbe-4ed9-b60b-7c6197ff1803",
-            "this_slug": "indexes"
-          },
-          "duration": 26.324749999999995
-        },
-        {
-          "cypher": "CREATE (this:Lesson { id: $this_id, slug: $this_slug })\nRETURN this, elementId(this) AS __id",
-          "params": {
-            "this_id": "ee981c66-f9e8-41e3-bd0d-be73ff713c47",
-            "this_slug": "intro"
-          },
-          "duration": 26.926209
+          "duration": 35.60104200000001
         },
         {
           "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
           "params": {
             "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
           },
-          "duration": 7.697416999999973
+          "duration": 8.795124999999985
         },
         {
           "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
           },
-          "duration": 8.556333999999993
+          "duration": 2.394584000000009
+        },
+        {
+          "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`OWNS`]->(to)\nRETURN rel",
+          "params": {
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
+          },
+          "duration": 29.513958000000002
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nOPTIONAL MATCH (this)-[this_pets_rel:`OWNS`]->()\nDELETE this_pets_rel\nDETACH DELETE this\nRETURN count(this) AS deleted",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+          },
+          "duration": 50.82608399999998
+        },
+        {
+          "cypher": "MATCH (this:Pet)\nWHERE (this.name = $where_this_name)\nRETURN this\nLIMIT 1",
+          "params": {
+            "where_this_name": "Rex"
+          },
+          "duration": 20.343250000000012
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
+          },
+          "duration": 3.6833330000000046
+        }
+      ]
+    },
+    "eager-read-models": {
+      "ok": true,
+      "ms": 482,
+      "output": "[ 'indexes', 'intro' ]\n{ title: 'Neo4j 101', status: 'ACTIVE' } [ 'intro' ] 1",
+      "error": "TransientError: ForsetiClient[transactionId=37, clientId=1] can't acquire ExclusiveLock{owner=ForsetiClient[transactionId=36, clientId=2]} on NODE_RELATIONSHIP_GROUP_DELETE(5) because holders of that lock are waiting for ForsetiClient[transactionId=37, clientId=1].\n Wait list:ExclusiveLock[\nClient[36] waits for [ForsetiClient[transactionId=37, clientId=1]]]\n    at classifyError (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:55550:10)\n    at withQueryContext (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:55586:23)\n    at Neo4jTransactionHandle.run (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:55727:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Object.run (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:55808:14)\n    at async DeleteService.delete (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:62151:20)\n    at async Neode2.delete (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:68110:7)\n    at async Promise.all (index 0)\n    at async main (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:68537:5) {\n  isRetryable: true,\n  code: 'Neo.TransientError.Transaction.DeadlockDetected',\n  [cause]: Neo4jError2: ForsetiClient[transactionId=37, clientId=1] can't acquire ExclusiveLock{owner=ForsetiClient[transactionId=36, clientId=2]} on NODE_RELATIONSHIP_GROUP_DELETE(5) because holders of that lock are waiting for ForsetiClient[transactionId=37, clientId=1].\n   Wait list:ExclusiveLock[\n  Client[36] waits for [ForsetiClient[transactionId=37, clientId=1]]]\n  \n      at captureStacktrace (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:6210:21)\n      at Result2.GenericResult2 (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:6229:25)\n      at new Result2 (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:6724:44)\n      at newCompletedResult (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:7427:14)\n      at Object.run (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:7211:18)\n      at Transaction2.run (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:7060:36)\n      at Neo4jTransactionHandle.run (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:55721:36)\n      at file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:55835:66\n      at Object.run (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:55808:20)\n      at DeleteService.delete (file:///Users/adam/neode/neode-website-mobile/.verify/eager-read-models.mjs:62151:38) {\n    constructor: [Function: Neo4jError2] {\n      isRetriable: [Function (anonymous)],\n      isRetryable: [Function (anonymous)]\n    },\n    cause: undefined,\n    gqlStatus: '50N05',\n    gqlStatusDescription: 'error: general processing exception - deadlock detected. Deadlock detected while trying to acquire locks. See log for more details.',\n    diagnosticRecord: {\n      OPERATION: '',\n      OPERATION_CODE: '0',\n      CURRENT_SCHEMA: '/',\n      _classification: 'TRANSIENT_ERROR'\n    },\n    classification: 'TRANSIENT_ERROR',\n    rawClassification: 'TRANSIENT_ERROR',\n    code: 'Neo.TransientError.Transaction.DeadlockDetected',\n    retriable: true,\n    retryable: true\n  }\n}",
+      "statements": [
+        {
+          "cypher": "CREATE (this:Course { id: $this_id, title: $this_title, status: $this_status })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "daa12943-2332-44bc-9509-2ac877d67f75",
+            "this_title": "Neo4j 101",
+            "this_status": "ACTIVE"
+          },
+          "duration": 26.716707999999997
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN \n     this { \n        .*\n        ,__EAGER_ID__: elementId(this)\n        ,__EAGER_LABELS__: labels(this)\n        ,lessons: [ (this)-[this_lessons_rel:`HAS_LESSON`]->(this_lessons_node:Lesson) | \n         this_lessons_node { \n                .*\n                ,__EAGER_ID__: elementId(this_lessons_node)\n                ,__EAGER_LABELS__: labels(this_lessons_node)\n        } ]\n    } AS this\nLIMIT 1",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 31.771625
+        },
+        {
+          "cypher": "CREATE (this:Lesson { id: $this_id, slug: $this_slug })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "1f2ce9b8-79c5-462f-87b6-55f72bfb18fe",
+            "this_slug": "indexes"
+          },
+          "duration": 16.628584000000004
+        },
+        {
+          "cypher": "CREATE (this:Lesson { id: $this_id, slug: $this_slug })\nRETURN this, elementId(this) AS __id",
+          "params": {
+            "this_id": "e545e11e-d47a-4543-9aca-880a8778df13",
+            "this_slug": "intro"
+          },
+          "duration": 17.298084000000017
         },
         {
           "cypher": "CREATE (this:Student { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "29be07d9-2d35-4ae6-8060-37ed3859832d",
+            "this_id": "69d58e8e-4451-4e7d-bca5-e7d5abfd66b5",
             "this_name": "Adam"
           },
-          "duration": 26.270083999999997
+          "duration": 13.793959000000001
         },
         {
           "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN \n     this { \n        .*\n        ,__EAGER_ID__: elementId(this)\n        ,__EAGER_LABELS__: labels(this)\n        ,courses: [ (this)-[this_courses_rel:`IN_COURSE`]->(this_courses_node:Course) | \n         this_courses_node { \n                .*\n                ,__EAGER_ID__: elementId(this_courses_node)\n                ,__EAGER_LABELS__: labels(this_courses_node)\n                ,lessons: [ (this_courses_node)-[this_courses_node_lessons_rel:`HAS_LESSON`]->(this_courses_node_lessons_node:Lesson) | \n             this_courses_node_lessons_node { \n                        .*\n                        ,__EAGER_ID__: elementId(this_courses_node_lessons_node)\n                        ,__EAGER_LABELS__: labels(this_courses_node_lessons_node)\n            } ]\n        } ]\n    } AS this\nLIMIT 1",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
           },
-          "duration": 109.95829200000003
+          "duration": 57.204666
         },
         {
           "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`HAS_LESSON`]->(to)\nRETURN rel",
           "params": {
-            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8",
-            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
           },
-          "duration": 74.28308399999997
+          "duration": 47.26008299999998
         },
         {
           "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`HAS_LESSON`]->(to)\nRETURN rel",
           "params": {
-            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8",
-            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
           },
-          "duration": 16.251041999999984
+          "duration": 5.307957999999985
         },
         {
           "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`IN_COURSE`]->(to)\nRETURN rel",
           "params": {
-            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9",
-            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
           },
-          "duration": 86.90674999999999
+          "duration": 33.217667000000006
         },
         {
           "cypher": "MATCH (from)\nWHERE (elementId(from) = $where_from_id)\nMATCH (to)\nWHERE (elementId(to) = $where_to_id)\nMERGE (from)-[rel:`COMPLETED_LESSON`]->(to)\nRETURN rel",
           "params": {
-            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9",
-            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
+            "where_from_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8",
+            "where_to_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
           },
-          "duration": 55.61262499999998
+          "duration": 25.234749999999963
         },
         {
           "cypher": "MATCH (this:Student { id: $this_id })\nRETURN this { .*, __EAGER_ID__: elementId(this), __EAGER_LABELS__: labels(this), courses: [ (this)-[this_courses_rel:`IN_COURSE`]->(this_courses_node:Course) | \n         this_courses_node { \n                .*\n                ,__EAGER_ID__: elementId(this_courses_node)\n                ,__EAGER_LABELS__: labels(this_courses_node)\n                ,lessons: [ (this_courses_node)-[this_courses_node_lessons_rel:`HAS_LESSON`]->(this_courses_node_lessons_node:Lesson) | \n             this_courses_node_lessons_node { \n                        .*\n                        ,__EAGER_ID__: elementId(this_courses_node_lessons_node)\n                        ,__EAGER_LABELS__: labels(this_courses_node_lessons_node)\n            } ]\n        } ], course: [ (this)-[:`IN_COURSE`]->(node:`Course`) | node { .title, .status } ][0], completedSlugs: [ (this)-[:`COMPLETED_LESSON`]-(node:`Lesson`) | node.slug ], completedCount: COUNT { (this)-[:`COMPLETED_LESSON`]->(node) } } AS this\nLIMIT 1",
           "params": {
-            "this_id": "29be07d9-2d35-4ae6-8060-37ed3859832d"
+            "this_id": "69d58e8e-4451-4e7d-bca5-e7d5abfd66b5"
           },
-          "duration": 181.74374999999998
+          "duration": 91.76512500000001
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 25.742500000000007
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
             "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
           },
-          "duration": 27.725374999999985
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
-          },
-          "duration": 30.18795799999998
+          "duration": 29.495457999999985
         }
       ]
     },
     "validation": {
       "ok": true,
-      "ms": 282,
-      "output": "created 3ea5c822-15dc-4808-8994-3e07341a651e",
+      "ms": 134,
+      "output": "created 92ff687b-e211-4ddf-bea1-a3db88af4af7",
       "error": "Rejected: 3 failing checks\n- \"name\" length must be at least 2 characters long\n- \"email\" must be a valid email\n- \"age\" must be less than or equal to 150",
       "statements": [
         {
           "cypher": "CREATE (this:User { id: $this_id, name: $this_name, email: $this_email, age: $this_age })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "3ea5c822-15dc-4808-8994-3e07341a651e",
+            "this_id": "92ff687b-e211-4ddf-bea1-a3db88af4af7",
             "this_name": "Adam",
             "this_email": "adam@example.com",
             "this_age": 30
           },
-          "duration": 24.463750000000005
+          "duration": 20.906791999999996
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:9"
           },
-          "duration": 3.6354590000000258
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
-          },
-          "duration": 4.623874999999998
+          "duration": 3.550625000000011
         }
       ]
     },
     "schema-sync": {
       "ok": true,
-      "ms": 558,
+      "ms": 341,
       "output": "installed: CREATE CONSTRAINT person_id_unique_b157af8a IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`id` IS UNIQUE\ninstalled: CREATE CONSTRAINT person_email_unique_b37312eb IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`email` IS UNIQUE\ninstalled: CREATE INDEX person_name_index_71331bf7 IF NOT EXISTS FOR (n:`Person`) ON (n.`name`)\nstale (4) — installed but not declared:\n  - FULLTEXT __ogm_ft_probe__ on :__OgmFulltextProbe__ (__probe__)\n      fix (requires dropStale: true): DROP FULLTEXT INDEX __ogm_ft_probe__ IF EXISTS\n  - VECTOR __ogm_vec_probe__ on :__OgmVectorProbe__ (__probe__)\n      fix (requires dropStale: true): DROP VECTOR INDEX __ogm_vec_probe__ IF EXISTS\n  - VECTOR movie_embedding_vector on :Movie (embedding)\n      fix (requires dropStale: true): DROP VECTOR INDEX movie_embedding_vector IF EXISTS\n  - FULLTEXT movie_search on :Movie (title, plot)\n      fix (requires dropStale: true): DROP FULLTEXT INDEX movie_search IF EXISTS\ndropped: DROP CONSTRAINT person_id_unique_b157af8a IF EXISTS\ndropped: DROP CONSTRAINT person_email_unique_b37312eb IF EXISTS\ndropped: DROP INDEX person_name_index_71331bf7 IF EXISTS",
       "error": "",
       "statements": [
         {
           "cypher": "CREATE CONSTRAINT person_id_unique_b157af8a IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`id` IS UNIQUE",
           "params": {},
-          "duration": 31.700416999999987
+          "duration": 50.12412499999999
         },
         {
           "cypher": "CREATE CONSTRAINT person_email_unique_b37312eb IF NOT EXISTS FOR (n:`Person`) REQUIRE n.`email` IS UNIQUE",
           "params": {},
-          "duration": 24.502249999999975
+          "duration": 14.165750000000003
         },
         {
           "cypher": "CREATE INDEX person_name_index_71331bf7 IF NOT EXISTS FOR (n:`Person`) ON (n.`name`)",
           "params": {},
-          "duration": 35.590833
+          "duration": 15.442207999999994
         },
         {
           "cypher": "SHOW CONSTRAINTS",
           "params": {},
-          "duration": 26.134291999999988
+          "duration": 32.32720800000001
         },
         {
           "cypher": "SHOW INDEXES",
           "params": {},
-          "duration": 43.29524999999998
+          "duration": 33.72358300000002
         },
         {
           "cypher": "SHOW CURRENT GRAPH TYPE",
           "params": {},
-          "duration": 20.674000000000035
+          "duration": 12.642083999999983
         },
         {
           "cypher": "CREATE (this:Person { id: $this_id, email: $this_email, name: $this_name })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "f827543a-75ab-4f3a-a07f-86e2cd5a3e01",
+            "this_id": "a951bbcd-3c80-4409-bd9e-12c5f6ad91fc",
             "this_email": "a@example.com",
             "this_name": "Adam"
           },
-          "duration": 31.915333000000032
+          "duration": 37.23145900000003
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:10"
           },
-          "duration": 23.663749999999993
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:4"
-          },
-          "duration": 71.61237499999999
+          "duration": 12.340374999999995
         },
         {
           "cypher": "DROP CONSTRAINT person_id_unique_b157af8a IF EXISTS",
           "params": {},
-          "duration": 27.74145900000002
+          "duration": 10.038499999999999
         },
         {
           "cypher": "DROP CONSTRAINT person_email_unique_b37312eb IF EXISTS",
           "params": {},
-          "duration": 41.47566699999999
+          "duration": 8.486041999999998
         },
         {
           "cypher": "DROP INDEX person_name_index_71331bf7 IF EXISTS",
           "params": {},
-          "duration": 20.288332999999966
+          "duration": 6.562582999999961
         }
       ]
     },
     "search-fulltext-vector": {
       "ok": true,
-      "ms": 548,
+      "ms": 285,
       "output": "fulltext 0.086: Se7en\nfulltext 0.080: The Matrix\nvector 0.998: The Matrix\nvector 0.560: Se7en",
       "error": "",
       "statements": [
         {
           "cypher": "CREATE FULLTEXT INDEX movie_search IF NOT EXISTS FOR (n:`Movie`) ON EACH [n.`title`, n.`plot`]",
           "params": {},
-          "duration": 101.83925
+          "duration": 32.76675
         },
         {
           "cypher": "CREATE VECTOR INDEX movie_embedding_vector IF NOT EXISTS FOR (n:`Movie`) ON (n.`embedding`) OPTIONS { indexConfig: { `vector.dimensions`: 3, `vector.similarity_function`: 'cosine' } }",
           "params": {},
-          "duration": 13.823791
+          "duration": 16.083040999999994
         },
         {
           "cypher": "CREATE (this:Movie { title: $this_title, plot: $this_plot, embedding: $this_embedding })\nRETURN this, elementId(this) AS __id",
@@ -507,14 +453,7 @@
               0
             ]
           },
-          "duration": 21.222916999999995
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
-          },
-          "duration": 18.75729100000001
+          "duration": 20.636875000000003
         },
         {
           "cypher": "CREATE (this:Movie { title: $this_title, plot: $this_plot, embedding: $this_embedding })\nRETURN this, elementId(this) AS __id",
@@ -527,14 +466,7 @@
               0.2
             ]
           },
-          "duration": 83.004708
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:10"
-          },
-          "duration": 13.032875000000047
+          "duration": 21.45154099999999
         },
         {
           "cypher": "CALL db.index.fulltext.queryNodes($index, $q) YIELD node, score RETURN node, score ORDER BY score DESC LIMIT 5",
@@ -542,7 +474,7 @@
             "index": "movie_search",
             "q": "hacker"
           },
-          "duration": 34.74150000000003
+          "duration": 44.34258399999999
         },
         {
           "cypher": "MATCH (n:`Movie`) SEARCH n IN (VECTOR INDEX `movie_embedding_vector` FOR $vector LIMIT $k) SCORE AS score RETURN n AS node, score ORDER BY score DESC",
@@ -555,7 +487,7 @@
               0
             ]
           },
-          "duration": 23.816291999999976
+          "duration": 7.178957999999994
         },
         {
           "cypher": "CALL db.index.vector.queryNodes($index, $k, $vector) YIELD node, score RETURN node, score ORDER BY score DESC",
@@ -568,148 +500,160 @@
               0
             ]
           },
-          "duration": 24.078915999999992
+          "duration": 22.82012500000002
         },
         {
           "cypher": "MATCH (this:Movie)\nRETURN this",
           "params": {},
-          "duration": 19.337458000000026
+          "duration": 13.634375000000006
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:10"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
           },
-          "duration": 11.560708999999974
+          "duration": 11.930915999999996
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:7"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
           },
-          "duration": 12.08012500000001
+          "duration": 12.268540999999999
         }
       ]
     },
     "run-all-and-transactions": {
       "ok": true,
-      "ms": 697,
+      "ms": 180,
       "output": "runAll wrote 2 statements\ntags inside the transaction: 3\ntags after the run: 3",
       "error": "runAll rolled back: ERROR_TRANSACTION_FAILED: failed statement(s) 1",
       "statements": [
         {
           "cypher": "CREATE (:Tag {name: \"alpha\"})",
           "params": {},
-          "duration": 77.60583299999999
+          "duration": 28.15599999999999
         },
         {
           "cypher": "CREATE (:Tag {name: $name})",
           "params": {
             "name": "beta"
           },
-          "duration": 22.639624999999995
+          "duration": 10.05787500000001
         },
         {
           "cypher": "CREATE (:Tag {name: \"gamma\"})",
           "params": {},
-          "duration": 10.105415999999991
+          "duration": 4.97254199999999
         },
         {
           "cypher": "CREATE BAD SYNTAX",
           "params": {},
-          "duration": 12.001582999999982
+          "duration": 2.720792000000003
         },
         {
           "cypher": "CREATE (:Tag {name: $name})",
           "params": {
             "name": "from-transaction"
           },
-          "duration": 29.48895799999997
+          "duration": 8.154916
         },
         {
           "cypher": "MATCH (t:Tag) RETURN count(t) AS count",
           "params": {},
-          "duration": 18.56170800000001
+          "duration": 14.67720899999999
         },
         {
           "cypher": "MATCH (this:Tag)\nRETURN this",
           "params": {},
-          "duration": 37.374540999999965
+          "duration": 12.36499999999998
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
-          "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:0"
-          },
-          "duration": 10.037624999999991
-        },
-        {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
             "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:2"
           },
-          "duration": 49.460959
+          "duration": 3.466542000000004
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:8"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:3"
           },
-          "duration": 56.37450000000001
+          "duration": 6.039749999999998
+        },
+        {
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
+          "params": {
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:5"
+          },
+          "duration": 6.747167000000019
         }
       ]
     },
     "multi-database": {
       "ok": true,
-      "ms": 231,
-      "output": "audit copy holds 6 person node(s)\ncount via cypher: 6",
+      "ms": 199,
+      "output": "audit copy holds 16 person node(s)\naudit page 1 holds 1 person node(s)\ncount via cypher: 16",
       "error": "",
       "statements": [
         {
           "cypher": "CREATE (this:Person { id: $this_id, name: $this_name })\nRETURN this, elementId(this) AS __id",
           "params": {
-            "this_id": "bd434f17-6bd1-4e5c-9f6c-33228ceb3038",
+            "this_id": "4ab11607-e705-49c4-bdc3-f3eae61a53ee",
             "this_name": "Adam"
           },
-          "duration": 48.960834000000006
+          "duration": 22.733874999999998
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nRETURN this\nLIMIT 1",
+          "cypher": "MERGE (this:Person { id: $this_id })\nON CREATE SET this.id = $set_0\nSET this.name = $set_1\nRETURN this, elementId(this) AS __id",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
+            "this_id": "4ab11607-e705-49c4-bdc3-f3eae61a53ee",
+            "set_0": "4ab11607-e705-49c4-bdc3-f3eae61a53ee",
+            "set_1": "Adam"
           },
-          "duration": 3.3785000000000025
+          "duration": 30.416792
         },
         {
           "cypher": "MATCH (this:Person)\nRETURN this",
           "params": {},
-          "duration": 4.405709000000002
+          "duration": 12.063749999999999
+        },
+        {
+          "cypher": "MATCH (this:Person)\nRETURN this\nORDER BY elementId(this)\nLIMIT 25",
+          "params": {},
+          "duration": 16.881916999999987
+        },
+        {
+          "cypher": "MATCH (this:Person)\nRETURN count(this) AS total",
+          "params": {},
+          "duration": 11.791291999999999
         },
         {
           "cypher": "MATCH (p:Person) RETURN count(p) AS count",
           "params": {},
-          "duration": 4.007417000000004
+          "duration": 11.121332999999993
         },
         {
-          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this",
+          "cypher": "MATCH (this)\nWHERE (elementId(this) = $where_this_id)\nDETACH DELETE this\nRETURN count(this) AS deleted",
           "params": {
-            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:1"
+            "where_this_id": "4:2236d3dd-e8f7-46eb-87e6-7d73b72b0df9:6"
           },
-          "duration": 3.25354200000001
+          "duration": 2.863665999999995
         }
       ],
       "auditOk": true
     },
     "server-startup": {
       "ok": true,
-      "ms": 296,
+      "ms": 284,
       "output": "listening on :3111\n\nGET / -> 200 nodes: 0",
       "error": "",
       "statements": [
         {
           "cypher": "MATCH (n) RETURN count(n) AS nodes",
           "params": {},
-          "duration": 14.723833000000013
+          "duration": 12.681125000000009
         }
       ]
     },

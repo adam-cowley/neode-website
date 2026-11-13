@@ -7,7 +7,7 @@ import DriftSteps from '../components/DriftSteps.astro'
 
 <Base title="neode — Why an OGM?">
   <section>
-    <div class="wrap" style="padding:72px 32px 56px">
+    <div class="wrap" style="padding:clamp(36px,11vw,72px) var(--gutter) clamp(28px,11vw,56px)">
       <h1 style="margin:0;font-size:clamp(38px,5vw,60px);line-height:1.05;letter-spacing:-.02em;max-width:880px;text-wrap:balance">An OGM is the part of your graph code you stop re-writing.</h1>
       <p style="font-size:18px;color:var(--mute);margin:20px 0 0;max-width:660px">
         An object-graph mapper turns models into Cypher and records back into typed objects. You still get a graph. You
@@ -17,14 +17,14 @@ import DriftSteps from '../components/DriftSteps.astro'
   </section>
 
   <section style="border-top:1px solid var(--line);background:var(--surf)">
-    <div class="wrap" style="padding:72px 32px">
+    <div class="wrap" style="padding:clamp(36px,11vw,72px) var(--gutter)">
       <h2 style="margin:0 0 36px;font-size:clamp(28px,3.5vw,40px);line-height:1.1;letter-spacing:-.015em">Create one person.</h2>
       <CompareRaw />
     </div>
   </section>
 
   <section id="one-query">
-    <div class="wrap" style="padding:88px 32px">
+    <div class="wrap" style="padding:clamp(44px,11vw,88px) var(--gutter)">
       <h2 style="margin:0 0 12px;font-size:clamp(28px,3.5vw,40px);line-height:1.1;letter-spacing:-.015em">One query per read.</h2>
       <p style="margin:0 0 40px;color:var(--mute);max-width:620px">
         Hydrating a movie and its cast by hand usually means one query for the movie and one more per related node.
@@ -63,7 +63,7 @@ import DriftSteps from '../components/DriftSteps.astro'
   </section>
 
   <section id="errors" style="border-top:1px solid var(--line);background:var(--surf)">
-    <div class="wrap" style="padding:88px 32px">
+    <div class="wrap" style="padding:clamp(44px,11vw,88px) var(--gutter)">
       <h2 style="margin:0 0 12px;font-size:clamp(28px,3.5vw,40px);line-height:1.1;letter-spacing:-.015em">Errors you can switch on.</h2>
       <p style="margin:0 0 36px;color:var(--mute);max-width:620px">
         A typed taxonomy instead of parsing driver messages. Validation failures arrive together, before anything reaches
@@ -74,7 +74,7 @@ import DriftSteps from '../components/DriftSteps.astro'
   </section>
 
   <section id="drift">
-    <div class="wrap" style="padding:88px 32px">
+    <div class="wrap" style="padding:clamp(44px,11vw,88px) var(--gutter)">
       <h2 style="margin:0 0 12px;font-size:clamp(28px,3.5vw,40px);line-height:1.1;letter-spacing:-.015em">A migration workflow for your schema.</h2>
       <p style="margin:0 0 36px;color:var(--mute);max-width:620px">
         Your models declare constraints and indexes. neode compares them with what is installed and walks you from one to
