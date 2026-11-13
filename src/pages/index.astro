@@ -15,7 +15,7 @@ import FourSteps from '../components/FourSteps.astro'
 
   <!-- LIVE CELL -->
   <section>
-    <div class="wrap" style="padding:24px 32px 80px">
+    <div class="wrap" style="padding:24px var(--gutter) clamp(40px,11vw,80px)">
       <PlayCell recipe="quickstart" label="quickstart.ts" interactive />
     </div>
   </section>
@@ -24,7 +24,7 @@ import FourSteps from '../components/FourSteps.astro'
 
   <!-- PILLARS -->
   <section>
-    <div class="wrap" style="padding:96px 32px 40px">
+    <div class="wrap" style="padding:clamp(48px,11vw,96px) var(--gutter) 40px">
       <h2 style="margin:0 0 40px;font-size:clamp(32px,4vw,46px);line-height:1.08;letter-spacing:-.015em;max-width:760px;text-wrap:balance">The API, area by area.</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:24px">
         <Pillar

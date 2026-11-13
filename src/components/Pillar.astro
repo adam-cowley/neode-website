@@ -32,7 +32,7 @@ const chipStyle =
       rows.map((r, i) => (
         <div style={`display:flex;gap:16px;padding:10px 0;${i < rows.length - 1 ? 'border-bottom:1px dashed var(--line)' : ''}`}>
           <dt style="color:var(--mute);min-width:84px;flex-shrink:0">{r.k}</dt>
-          <dd style="margin:0" set:html={r.v} />
+          <dd style="margin:0;min-width:0;overflow-wrap:anywhere" set:html={r.v} />
         </div>
       ))
     }

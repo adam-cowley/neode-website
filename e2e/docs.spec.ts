@@ -36,7 +36,10 @@ test('guide pager walks models → relationships', async ({ page }) => {
   await expect(page.locator('.side[aria-current="page"]')).toHaveText('Relationships')
 })
 
-test('guide try-it cells carry the matching recipe', async ({ page }) => {
+test('guide "See it" cells carry the matching recipe', async ({ page }) => {
   await page.goto('/docs/reference/relationships/', { waitUntil: 'networkidle' })
-  await expect(page.locator('textarea[data-choreo-editor]')).toHaveValue(/neode\.relate\(/)
+  // Docs cells are static: the recipe's code plus the graph it creates
+  const cell = page.locator('.pc[data-recipe="relationships"]')
+  await expect(cell.locator('.pc-code')).toContainText('neode.relate(')
+  await expect(cell.locator('svg[data-choreo-graph]')).toBeVisible()
 })

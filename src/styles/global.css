@@ -16,6 +16,7 @@
   --navbg: rgba(7, 11, 22, 0.88);
   --onnode: #1b1000;
   --code-pad: 16px 18px; /* one padding for every code pane */
+  --gutter: clamp(16px, 5vw, 32px);
   color-scheme: dark;
 }
 
@@ -91,8 +92,8 @@ h3 {
 .wrap {
   max-width: 1200px;
   margin: 0 auto;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
 }
 @media (min-width: 1360px) {
   .wrap-wide {
@@ -286,6 +287,15 @@ h3 {
   min-width: 180px;
   flex-shrink: 0;
 }
+@media (max-width: 520px) {
+  .dl dt {
+    min-width: 100%;
+  }
+  .toc,
+  .sub {
+    min-height: 44px;
+  }
+}
 .dl dd {
   margin: 0;
   color: var(--mute);
@@ -293,6 +303,7 @@ h3 {
      the dd alignment instead of the flex container wrapping the item */
   flex: 1;
   min-width: min(240px, 100%);
+  overflow-wrap: anywhere; /* long error/class names at 320px */
 }
 .code {
   margin: 0 0 8px;
@@ -456,5 +467,23 @@ h3 {
   .fl,
   .flow {
     animation: none;
+  }
+}
+
+/* ---- mobile type floor ---------------------------------------------------
+   Most labels are styled inline (11-12px). One central rule lifts them on
+   phones instead of editing every component; !important is required to beat
+   inline styles. SVG text is excluded (it scales with its viewBox). */
+@media (max-width: 720px) {
+  .chip,
+  .gh,
+  footer {
+    font-size: 13px;
+  }
+  [style*='font-size:11px'] {
+    font-size: 12px !important;
+  }
+  [style*='font-size:12px'] {
+    font-size: 13px !important;
   }
 }

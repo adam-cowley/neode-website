@@ -19,16 +19,16 @@ interface PageSpec {
 const PAGES: PageSpec[] = [
   { path: '/', title: 'neode — Define your graph in TypeScript', mustContain: ['Define your graph in TypeScript', 'Same code. Bring your own engine.', 'Honest caveats.', 'From install to first query in four steps.'] },
   { path: '/playground/', title: 'neode — Playground', mustContain: ['Goodfellas graph · seeded on boot', 'playback · verified Neo4j run', 'Result', 'Validation'] },
-  { path: '/examples/', title: 'neode — Examples', mustContain: ['Nine runnable recipes', 'Open in playground', 'verified'] },
+  { path: '/examples/', title: 'neode — Examples', mustContain: ['Nine runnable recipes', 'Open in playground', 'recipes ran against'] },
   { path: '/why-ogm/', title: 'neode — Why an OGM?', mustContain: ['Create one person.', 'One query per read.', 'Errors you can switch on.', 'A migration workflow'] },
   { path: '/agents/', title: 'neode — AI and Agents', mustContain: ['Ground Text2Cypher in the live schema', 'Text2Cypher grounding', 'MCP resources', 'llms.txt'] },
   { path: '/docs/', title: 'neode — Docs', mustContain: ['Start with the guide. Keep the API reference open.', 'API reference', 'Migrating from 0.4.9'] },
   { path: '/docs/api-reference/', title: 'neode — API reference', mustContain: ['API reference'] },
   { path: '/docs/migration/', title: 'neode — Migrating from 0.4.9', mustContain: ['Migrating from 0.4.9'] },
-  { path: '/docs/reference/models/', title: 'neode — Defining models', mustContain: ['Decorators', 'Map API', 'Try it'] },
-  { path: '/docs/reference/relationships/', title: 'neode — Relationships', mustContain: ['Eager loading', 'Read models', 'Try it'] },
-  { path: '/docs/reference/traversals/', title: 'neode — Traversals', mustContain: ['Hops', 'Try it'] },
-  { path: '/docs/reference/search/', title: 'neode — Vector and full-text search', mustContain: ['Vector search', 'Full-text search', 'Try it'] },
+  { path: '/docs/reference/models/', title: 'neode — Defining models', mustContain: ['Decorators', 'Map API', 'See it'] },
+  { path: '/docs/reference/relationships/', title: 'neode — Relationships', mustContain: ['Eager loading', 'Read models', 'See it'] },
+  { path: '/docs/reference/traversals/', title: 'neode — Traversals', mustContain: ['Hops', 'See it'] },
+  { path: '/docs/reference/search/', title: 'neode — Vector and full-text search', mustContain: ['Vector search', 'Full-text search', 'See it'] },
 ]
 
 async function watchConsole(page: Page): Promise<string[]> {

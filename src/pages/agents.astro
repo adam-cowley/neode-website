@@ -5,7 +5,7 @@ import OntologyDemo from '../components/OntologyDemo.astro'
 
 <Base title="neode — AI and Agents">
   <section>
-    <div class="wrap" style="padding:72px 32px 48px">
+    <div class="wrap" style="padding:clamp(36px,11vw,72px) var(--gutter) 48px">
       <h1 style="margin:0;font-size:clamp(38px,5vw,60px);line-height:1.05;letter-spacing:-.02em;max-width:900px;text-wrap:balance">Ground Text2Cypher in the live schema.</h1>
       <p style="font-size:18px;color:var(--mute);margin:20px 0 0;max-width:660px">
         A model of the graph already exists in your code — the models you defined.
@@ -17,13 +17,13 @@ import OntologyDemo from '../components/OntologyDemo.astro'
   </section>
 
   <section>
-    <div class="wrap" style="padding:16px 32px 80px">
+    <div class="wrap" style="padding:16px var(--gutter) clamp(40px,11vw,80px)">
       <OntologyDemo />
     </div>
   </section>
 
   <section style="border-top:1px solid var(--line);background:var(--surf)">
-    <div class="wrap" style="padding:80px 32px">
+    <div class="wrap" style="padding:clamp(40px,11vw,80px) var(--gutter)">
       <h2 style="margin:0 0 32px;font-size:clamp(28px,3.5vw,40px);line-height:1.1;letter-spacing:-.015em">The agent-facing surface.</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:16px">
         <div style="border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:22px">

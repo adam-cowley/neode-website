@@ -38,6 +38,7 @@
     border-radius: 6px;
     font-family: inherit;
     font-size: 0.95em;
+    overflow-wrap: anywhere; /* long identifiers must not force horizontal scroll */
   }
   .prose pre {
     border: 1px solid var(--line);
@@ -50,6 +51,7 @@
     line-height: 1.8;
   }
   .prose pre code {
+    overflow-wrap: normal;
     background: transparent;
     padding: 0;
     color: inherit;
