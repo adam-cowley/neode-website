@@ -26,7 +26,7 @@ mkdirSync(join(site, 'public'), { recursive: true })
 mkdirSync(join(site, 'src/lib/generated'), { recursive: true })
 
 // 1. Cookbook sources, byte-for-byte
-const files = ['crud-collection.ts', 'relationships.ts', 'eager-read-models.ts', 'validation.ts', 'schema-sync.ts', 'search-fulltext-vector.ts', 'run-all-and-transactions.ts', 'multi-database.ts', 'server-startup.ts']
+const files = ['bulk-import.ts', 'crud-collection.ts', 'relationships.ts', 'eager-read-models.ts', 'validation.ts', 'schema-sync.ts', 'search-fulltext-vector.ts', 'run-all-and-transactions.ts', 'multi-database.ts', 'server-startup.ts']
 for (const f of files) {
   const src = join(repo, 'examples/cookbook', f)
   if (!existsSync(src)) throw new Error(`cookbook missing: ${src}`)
