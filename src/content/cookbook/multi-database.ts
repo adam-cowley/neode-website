@@ -34,6 +34,11 @@ async function main(): Promise<void> {
     const audits = await neode.get(Person, {}, undefined, undefined, 'audit')
     console.log(`audit copy holds ${audits.length} person node(s)`)
 
+    // Read-side pagination overrides per call too (paginate,
+    // findManyAndCount and search all take a `database`)
+    const page = await neode.paginate(Person, {}, { page: 1, limit: 25, database: 'audit' })
+    console.log(`audit page 1 holds ${page.items.length} person node(s)`)
+
     // Raw Cypher overrides per call too, through CypherOptions
     const output = await neode.cypher(
       'MATCH (p:Person) RETURN count(p) AS count',
