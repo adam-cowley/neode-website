@@ -19,6 +19,7 @@ const movie = await neode.find(Movie, title, { with: { actors: true } })`
 
 const toc = [
   { href: '#eager', label: 'Eager loading' },
+  { href: '#cardinality', label: 'Cardinality & claims' },
   { href: '#edges', label: 'Relationship entities' },
   { href: '#read-models', label: 'Read models' },
   { href: '#try', label: 'See it' },
@@ -26,7 +27,7 @@ const toc = [
 ---
 
 <Base title="neode — Relationships">
-  <DocsShell current="relationships" toc={toc} prev={{ href: 'models', label: 'Defining models' }} next={{ href: 'traversals', label: 'Traversals' }}>
+  <DocsShell current="relationships" toc={toc} prev={{ href: 'models', label: 'Defining models' }} next={{ href: 'cardinality', label: 'Cardinality & claims' }}>
     <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">{page.title}</h1>
     <p class="txt" style="font-size:18px">
       <code>@OneToOne</code> and <code>@OneToMany</code> describe edges from a model. Mark one eager and neode loads it in
@@ -36,6 +37,15 @@ const toc = [
     <h2 class="sec" id="eager">Eager loading</h2>
     <p class="txt">Ask for the relationship via the <code>with</code> option and the whole thing comes back hydrated, in one Cypher statement.</p>
     <Code code={EAGER} />
+
+    <h2 class="sec" id="cardinality">Cardinality &amp; claims</h2>
+    <p class="txt">
+      Relationships have two ends and both can be constrained. <code>cardinality</code> guards the forward side (one
+      target per source) at write time; <code>enforce</code> turns the inverse side (one source per target) into a
+      <em>database-level</em> guarantee backed by a uniqueness constraint — raw Cypher included — with
+      <code>claimConflict</code> picking what happens when the target is already taken.
+    </p>
+    <p class="txt"><a class="ref" href="/docs/reference/cardinality/">Cardinality &amp; claims — the full reference →</a></p>
 
     <h2 class="sec" id="edges">Relationship entities</h2>
     <p class="txt">

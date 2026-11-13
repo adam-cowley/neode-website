@@ -1,0 +1,161 @@
+---
+import Base from '../../../layouts/Base.astro'
+import DocsShell, { GUIDE } from '../../../components/DocsShell.astro'
+import Code from '../../../components/Code.astro'
+
+const page = GUIDE.find((p) => p.slug === 'cardinality')!
+
+const DECLARE = `@NodeEntity()
+export class Person {
+  @Uuid({ primary: true })
+  id: string
+
+  @OneToOne({
+    type: 'LIVES_AT',
+    target: () => Address,
+    direction: 'out',
+    cardinality: 'one',           // at most one edge — a second relate() throws
+    enforce: 'currentOccupantId', // @Unique property on Address
+    claimConflict: 'throw',       // 'refuse' (default) | 'detach' | 'throw'
+  })
+  address: Address | undefined
+}
+
+@NodeEntity()
+export class Address {
+  @Uuid({ primary: true })
+  id: string
+
+  // the claim record: which person claims this address.
+  // @Unique is what turns the declaration into a database guarantee
+  @String({ unique: true })
+  currentOccupantId: string | undefined
+}`
+
+const SWAP = `// move out and in — both swap the edge AND move the claim in one
+// statement (the old target's claim is removed, the new one is set)
+await neode.syncEdges(Person, person, 'address', [newAddress])
+await neode.replaceRelationship(person, 'address', [newAddress])
+
+// release without a replacement
+await neode.syncEdges(Person, person, 'address', [])`
+
+const POLICIES = `// the target is already claimed by a different source:
+await neode.relate(Person, personB, claimedAddress, 'address')
+
+// claimConflict: 'refuse' (default)
+//   -> matches zero rows, resolves undefined — nothing is stolen
+// claimConflict: 'detach'
+//   -> the other claimant's edges are deleted in the same statement
+//      and the claim moves to personB
+// claimConflict: 'throw'
+//   -> NeodeError naming the current claimant and the fix`
+
+const NESTED = `// nested creates claim at every level, four deep or more:
+await neode.create(Person, {
+  name: 'P',
+  address: {
+    name: 'home',
+    building: {
+      name: '221B',
+      street: { name: 'Baker Street' },
+    },
+  },
+})
+
+// person claims the address, the address claims the building,
+// the building claims the street — each claim referencing the SAME
+// generated primary keys the nodes were written with`
+
+const ENFORCED_WHERE = [
+  { what: 'One target per source (forward side)', where: 'Application guard', how: 'cardinality one / zeroOrOne — the count-guard before every write' },
+  { what: 'One source per target (inverse side)', where: 'Database', how: 'the @Unique property on the target backs the claim — raw Cypher included' },
+  { what: 'Claim moves', where: 'neode, one statement', how: 'replaceRelationship() / syncEdges() detach + SET atomically' },
+  { what: 'Claims released', where: 'neode', how: 'delete() / deleteAll() remove the property before the edges go' },
+  { what: 'Concurrent claims on one target', where: 'Database', how: 'the SET serialises on the node lock; the loser gets ConstraintViolationError' },
+]
+
+const toc = [
+  { href: '#declare', label: 'Declaring cardinality' },
+  { href: '#claims', label: 'Claims: enforce' },
+  { href: '#policies', label: 'claimConflict' },
+  { href: '#enforced-where', label: 'What is enforced where' },
+  { href: '#deletes', label: 'Deletes and swaps' },
+  { href: '#nested', label: 'Nested creates' },
+  { href: '#concurrency', label: 'Concurrency' },
+]
+---
+
+<Base title="neode — Cardinality & claims">
+  <DocsShell current="cardinality" toc={toc} prev={{ href: 'relationships', label: 'Relationships' }} next={{ href: 'traversals', label: 'Traversals' }}>
+    <h1 style="margin:0 0 14px;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em">{page.title}</h1>
+    <p class="txt" style="font-size:18px">
+      Neo4j has no edge-count constraints. neode enforces both sides of a relationship anyway: the
+      <strong>forward side</strong> (one target per source) as a write-time guard, and the
+      <strong>inverse side</strong> (one source per target) as a <em>database-level</em> guarantee backed by a
+      uniqueness constraint.
+    </p>
+
+    <h2 class="sec" id="declare">Declaring cardinality</h2>
+    <p class="txt">
+      <code>cardinality</code> takes <code>'one'</code>, <code>'zeroOrOne'</code> or <code>'many'</code>.
+      <code>@OneToOne</code> defaults to <code>'one'</code>, <code>@OneToMany</code> to <code>'many'</code> — override it
+      either way. A write that would leave a restricted relationship with more than one edge throws
+      <code>CardinalityViolationError</code> before anything is written.
+    </p>
+    <Code code={DECLARE} />
+    <p class="txt">
+      Swap an edge with <code>syncEdges()</code> or <code>replaceRelationship()</code> — both detach first, so a
+      <code>'one'</code> relationship never transiently holds two edges.
+    </p>
+
+    <h2 class="sec" id="claims">Claims: <code>enforce</code></h2>
+    <p class="txt">
+      The forward guard cannot help when two <em>different</em> sources relate to the same target — two people can each
+      call the same address home. <code>enforce</code> closes that side: it names a <code>@Unique</code> property on the
+      target model, and every write path keeps it pointed at the source node's primary-key value. The target's
+      uniqueness constraint — installed by <code>installSchema()</code> — then rejects a second claim <em>at the
+      database level</em>, raw Cypher included, and existing data is validated when the constraint is created.
+    </p>
+    <p class="txt">
+      Requirements, validated the first time the relationship is written: the named property must exist on the target and
+      be <code>@Unique</code>, cardinality must be <code>'one'</code> or <code>'zeroOrOne'</code>, and the source model
+      needs a primary key carrying a value. <code>enforce</code> on <code>'many'</code> is rejected.
+    </p>
+
+    <h2 class="sec" id="policies"><code>claimConflict</code></h2>
+    <p class="txt">
+      When <code>relate()</code> targets a node whose claim names a different source, the policy decides what happens:
+    </p>
+    <Code code={POLICIES} />
+    <dl style="margin:0 0 8px">
+      <div class="dl"><dt>'refuse' (default)</dt><dd>The statement matches zero rows and relate() resolves <code>undefined</code> — the claim is never stolen</dd></div>
+      <div class="dl"><dt>'detach'</dt><dd>The other claimant's edges are deleted in the same statement and the claim moves — a take-over</dd></div>
+      <div class="dl"><dt>'throw'</dt><dd>A cheap probe distinguishes the conflict from a missing target and fails loudly, naming the current claimant</dd></div>
+    </dl>
+
+    <h2 class="sec" id="enforced-where">What is enforced where</h2>
+    <dl style="margin:0 0 8px">
+      {ENFORCED_WHERE.map((row) => (
+        <div class="dl"><dt>{row.what}</dt><dd><strong>{row.where}</strong> — {row.how}</dd></div>
+      ))}
+    </dl>
+
+    <h2 class="sec" id="deletes">Deletes, swaps and nested creates</h2>
+    <p class="txt">
+      <code>delete()</code> and <code>deleteAll()</code> release the claims the deleted nodes hold before the edges go —
+      at every level of a cascade, so nothing below the root goes stale. Soft deletes keep the node and its claims.
+      Nested creates claim at every level, and generated <code>@Uuid</code> primaries are resolved once so the claim
+      always references the value the node was actually written with.
+    </p>
+    <Code code={NESTED} />
+
+    <h2 class="sec" id="concurrency">Concurrency</h2>
+    <p class="txt">
+      The inverse side is enforced by the database: two writers claiming the same target serialise on the node lock and
+      the loser gets <code>ConstraintViolationError</code>. The forward side is enforced by neode: two writers
+      <em>first-claiming</em> different targets concurrently can both succeed — Neo4j has no edge-count constraint — so
+      serialise writers, or stack <code>@Version</code> for optimistic locking, when that must never happen.
+    </p>
+  </DocsShell>
+</Base>
